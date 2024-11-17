@@ -14,9 +14,13 @@ public class Hospital {
     private List<String[]> patientList;
     private List<String[]> medicineList;
 
+    private String name;
+
 
     protected Hospital() {
     }
+
+    
 
     private List<String[]> loadStaff() {
         List<String[]> allStaff = new ArrayList<>();
@@ -129,6 +133,39 @@ public class Hospital {
     {
         if (user instanceof Administrator) writeStaffCSV(data);
     }
+
+    protected String getName(String hospitalID, User user)
+    {
+        String name = searchName(hospitalID, user);
+        return name;
+
+    }
+
+    private String searchName(String hospitalID, User user)
+    {
+        if (user instanceof Administrator || user instanceof Doctor || user instanceof Pharmacist)
+        {
+            staffList = loadStaff();
+            for (String[] staff : staffList)
+            {
+                if (staff[0].equals(hospitalID)) return staff[1];
+            }
+        }
+
+        else if (user instanceof Patient)
+        {
+            patientList = loadPatients();
+            for (String[] patient : patientList)
+            {
+                if (patient[0].equals(hospitalID)) return patient[1];
+            }
+
+        }
+
+        return null;
+
+    }
+
 
 
 }
