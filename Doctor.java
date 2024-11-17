@@ -19,7 +19,7 @@ public class Doctor extends User {
     }
     public Doctor(String hospitalID) {
         super(hospitalID);
-        this.staffName = "Default Doctor"; // Set a default value or fetch dynamically
+        this.staffName = "Default Doctor"; 
     }
     private String displayStaffName(Administrator admin) {
         return admin.getStaffName(hospitalID, this);
@@ -27,17 +27,17 @@ public class Doctor extends User {
 
     public void viewPatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
-        String line;
-        String csvSeparator = ",";
 
-        // Identify patients under this doctor's care
+        
         try (BufferedReader br = new BufferedReader(new FileReader(medicalRecordsPath))) {
+            String line;
+            String csvSeparator = ",";
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(csvSeparator);
 
-                // Check if column 8 (Doctor ID) matches the logged-in doctor (hospitalID)
+                
                 if (values.length > 8 && values[8].equals(hospitalID) && !patientsUnderCare.contains(values[1])) {
-                    patientsUnderCare.add(values[1]); // Add unique patient names under care
+                    patientsUnderCare.add(values[1]);
                 }
             }
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class Doctor extends User {
             return;
         }
 
-        // List all unique patients under this doctor's care
+        
         System.out.println("Select a patient to view medical records:");
         for (int i = 0; i < patientsUnderCare.size(); i++) {
             System.out.println((i + 1) + ": " + patientsUnderCare.get(i));
@@ -61,36 +61,36 @@ public class Doctor extends User {
 
         if (choice >= 0 && choice < patientsUnderCare.size()) {
             String selectedPatient = patientsUnderCare.get(choice);
+
+           
+            List<MedicalRecord> medicalRecords = MedicalRecordAction.readCSV(medicalRecordsPath, selectedPatient);
+
+            if (medicalRecords.isEmpty()) {
+                System.out.println("No medical records found for " + selectedPatient);
+                return;
+            }
+
             System.out.println("Medical Records for " + selectedPatient + ":");
 
-            // Display all records for the selected patient
-            try (BufferedReader br = new BufferedReader(new FileReader(medicalRecordsPath))) {
-                while ((line = br.readLine()) != null) {
-                    String[] values = line.split(csvSeparator);
-
-                    if (values.length > 1 && values[1].equals(selectedPatient)) {
-                        // Print details for the selected patient
-                        System.out.println("Patient ID: " + values[0]);
-                        System.out.println("Name: " + values[1]);
-                        System.out.println("Date of Birth: " + values[2]);
-                        System.out.println("Gender: " + values[3]);
-                        System.out.println("Blood Type: " + values[4]);
-                        System.out.println("Contact Info: " + values[5]);
-                        System.out.println("Number: " + values[6]);
-                        System.out.println("Appointment Date: " + values[7]);
-                        System.out.println("Doctor ID: " + values[8]);
-                        System.out.println("Doctor Name: " + values[9]);
-                        System.out.println("Time: " + values[10]);
-                        System.out.println("Diagnosis: " + values[11]);
-                        System.out.println("Treatment: " + values[12]);
-                        System.out.println("Prescription: " + values[13]);
-                        System.out.println("Amount: " + values[14]);
-                        System.out.println("Notes: " + values[15]);
-                        System.out.println("------------------------------------");
-                    }
-                }
-            } catch (IOException e) {
-                System.err.println("Error reading medical records: " + e.getMessage());
+           
+            for (MedicalRecord record : medicalRecords) {
+                System.out.println("Patient ID: " + record.getID());
+                System.out.println("Name: " + record.getPatient());
+                System.out.println("Date of Birth: " + record.getDOB());
+                System.out.println("Gender: " + record.getGender());
+                System.out.println("Blood Type: " + record.getBloodType());
+                System.out.println("Email: " + record.getEmail());
+                System.out.println("Number: " + record.getNumber());
+                System.out.println("Appointment Date: " + record.getAppointmentDate());
+                System.out.println("Doctor: " + record.getDoctor());
+                System.out.println("Doctor ID: " + record.getDoctorID());
+                System.out.println("Time: " + record.getAppointmentTime());
+                System.out.println("Diagnosis: " + record.getDiagnosis());
+                System.out.println("Treatment: " + record.getTreatments());
+                System.out.println("Prescription: " + record.getPrescription());
+                System.out.println("Amount: " + record.getMedicine_status()); 
+                System.out.println("Notes: " + record.getNote());
+                System.out.println("------------------------------------");
             }
         } else {
             System.out.println("Invalid choice.");
@@ -98,19 +98,20 @@ public class Doctor extends User {
     }
 
 
+
     public void updatePatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
         String line;
         String csvSeparator = ",";
 
-        // Step 1: Identify patients under the doctor's care
+        
         try (BufferedReader br = new BufferedReader(new FileReader(medicalRecordsPath))) {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(csvSeparator);
 
-                // Check if the record belongs to the logged-in doctor
+                
                 if (values.length > 8 && values[8].equals(hospitalID) && !patientsUnderCare.contains(values[1])) {
-                    patientsUnderCare.add(values[1]); // Add unique patient names
+                    patientsUnderCare.add(values[1]); 
                 }
             }
         } catch (IOException e) {
@@ -123,7 +124,7 @@ public class Doctor extends User {
             return;
         }
 
-        // Step 2: Let the doctor select a patient
+        
         System.out.println("Select a patient to update medical records:");
         for (int i = 0; i < patientsUnderCare.size(); i++) {
             System.out.println((i + 1) + ": " + patientsUnderCare.get(i));
@@ -131,7 +132,7 @@ public class Doctor extends User {
 
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt() - 1;
-        sc.nextLine(); // Consume newline
+        sc.nextLine(); 
 
         if (choice >= 0 && choice < patientsUnderCare.size()) {
             String selectedPatient = patientsUnderCare.get(choice);
@@ -139,13 +140,13 @@ public class Doctor extends User {
             List<String[]> recordsToEdit = new ArrayList<>();
             List<String> allLines = new ArrayList<>();
 
-            // Step 3: Load all records and identify editable ones
+            
             try (BufferedReader br = new BufferedReader(new FileReader(medicalRecordsPath))) {
                 while ((line = br.readLine()) != null) {
-                    allLines.add(line); // Add all lines for later rewriting
+                    allLines.add(line); 
                     String[] values = line.split(csvSeparator);
 
-                    // Check if the record belongs to the selected patient and doctor
+                    
                     if (values.length > 8 && values[1].equals(selectedPatient) && values[8].equals(hospitalID)) {
                         recordsToEdit.add(values);
                     }
@@ -160,7 +161,7 @@ public class Doctor extends User {
                 return;
             }
 
-            // Step 4: Let the doctor select a specific record
+            
             System.out.println("Select a record to edit (1, 2, ...):");
             for (int i = 0; i < recordsToEdit.size(); i++) {
                 System.out.println((i + 1) + ": Appointment Date: " + recordsToEdit.get(i)[7] +
@@ -168,7 +169,7 @@ public class Doctor extends User {
             }
 
             int recordChoice = sc.nextInt() - 1;
-            sc.nextLine(); // Consume newline
+            sc.nextLine(); 
 
             if (recordChoice >= 0 && recordChoice < recordsToEdit.size()) {
                 String[] selectedRecord = recordsToEdit.get(recordChoice);
@@ -183,7 +184,7 @@ public class Doctor extends User {
                     System.out.println("6: Save and Exit");
 
                     int updateChoice = sc.nextInt();
-                    sc.nextLine(); // Consume newline
+                    sc.nextLine(); 
 
                     switch (updateChoice) {
                         case 1:
@@ -217,7 +218,7 @@ public class Doctor extends User {
                     if (updateChoice == 6) break;
                 }
 
-                // Step 5: Save changes back to the file
+                
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(medicalRecordsPath))) {
                     for (String originalLine : allLines) {
                         String[] currentRecord = originalLine.split(csvSeparator);
@@ -227,9 +228,9 @@ public class Doctor extends User {
                                 currentRecord[7].equals(selectedRecord[7]) &&
                                 currentRecord[10].equals(selectedRecord[10]) &&
                                 currentRecord[8].equals(hospitalID)) {
-                            writer.write(String.join(csvSeparator, selectedRecord)); // Write updated record
+                            writer.write(String.join(csvSeparator, selectedRecord)); 
                         } else {
-                            writer.write(originalLine); // Write unedited records
+                            writer.write(originalLine); 
                         }
                         writer.newLine();
                     }
@@ -266,10 +267,10 @@ public class Doctor extends User {
         
         
     
-        // Get the available slots for the doctor
+        
         List<String> availableSlots = appointmentAction.getAvailableSlots(staffName);
 
-        // Display available slots
+        
         System.out.println("\nAvailable Slots:");
         for (String slot : availableSlots) {
             System.out.println(slot);
@@ -284,10 +285,10 @@ public class Doctor extends User {
         System.out.println("1. View Available Slots and Update");
         System.out.println("2. View Unavailable Slots and Update");
         int choice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+        sc.nextLine(); 
 
         if (choice == 1) {
-            // View and add available slots
+            
             List<String> availableSlots = appointmentAction.getAvailableSlots(staffName);
 
             System.out.println("Available Slots:");
@@ -311,7 +312,7 @@ public class Doctor extends User {
                 System.out.println("Failed to update the slot.");
             }
         } else if (choice == 2) {
-            // View and cancel unavailable slots
+            
             List<String[]> doctorBookedSlots = appointmentAction.getDoctorUnavailableSlots(staffName);
 
             System.out.println("Unavailable Slots:");
@@ -350,10 +351,10 @@ public class Doctor extends User {
     public void acceptOrDeclineRequests() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
 
-        // Fetch valid appointments for the doctor
+        
         List<Appointment> validAppointments = appointmentAction.getValidAppointments(staffName);
 
-        // Filter only "Booked" appointments
+        
         List<Appointment> bookedAppointments = new ArrayList<>();
         for (Appointment app : validAppointments) {
             if (app.getStatus().equalsIgnoreCase("Booked")) {
@@ -366,7 +367,7 @@ public class Doctor extends User {
             return;
         }
 
-        // Display booked appointments
+        
         System.out.println("Booked Appointments:");
         for (int i = 0; i < bookedAppointments.size(); i++) {
             Appointment app = bookedAppointments.get(i);
@@ -376,7 +377,7 @@ public class Doctor extends User {
                                ", Status: " + app.getStatus());
         }
 
-        // Prompt doctor to select an appointment
+        
         Scanner sc = new Scanner(System.in);
         System.out.println("Select an appointment to respond to (1, 2, 3, ...):");
         int choice = sc.nextInt() - 1;
@@ -386,10 +387,10 @@ public class Doctor extends User {
             System.out.println("1: Confirm, 2: Cancel");
             int decision = sc.nextInt();
 
-            // Update the appointment status
+            
             String newStatus = (decision == 1) ? "Confirmed" : "Canceled";
 
-            // Use AppointmentAction to update the appointment
+            
             boolean success = appointmentAction.updateAppointmentStatus(selectedAppointment, newStatus);
 
             if (success) {
@@ -405,10 +406,10 @@ public class Doctor extends User {
     public void viewUpcomingAppointment() {
     	AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
 
-        // Fetch valid appointments for the doctor
+        
         List<Appointment> validAppointments = appointmentAction.getValidAppointments(staffName);
 
-        // Filter only "Booked" appointments
+        
         List<Appointment> bookedAppointments = new ArrayList<>();
         for (Appointment app : validAppointments) {
             if (app.getStatus().equalsIgnoreCase("Confirmed")) {
@@ -421,7 +422,7 @@ public class Doctor extends User {
             return;
         }
 
-        // Display booked appointments
+        
         System.out.println("Confirmed Appointments:");
         for (int i = 0; i < bookedAppointments.size(); i++) {
             Appointment app = bookedAppointments.get(i);
@@ -436,10 +437,10 @@ public class Doctor extends User {
     public void updateAppointmentRecord() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
 
-        // Call the method to update the appointment
+       
         appointmentAction.updateAppointmentRecord(staffName);
 
-        // Retrieve the updated appointment directly from the CSV after the update
+        
         String[] updatedAppointment = fetchUpdatedAppointment();
 
         if (updatedAppointment != null) {
@@ -449,7 +450,7 @@ public class Doctor extends User {
         }
     }
 
-    // Fetch the most recently updated appointment for the doctor
+    
     private String[] fetchUpdatedAppointment() {
         String[] latestUpdatedAppointment = null;
         String line;
@@ -458,7 +459,7 @@ public class Doctor extends User {
         try (BufferedReader br = new BufferedReader(new FileReader(appointmentsPath))) {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(csvSeparator);
-                // Check if the appointment belongs to this doctor and is marked as "Completed"
+                
                 if (values.length > 4 && values[1].equals(staffName) && values[4].equals("Completed")) {
                     latestUpdatedAppointment = values;
                 }
@@ -473,7 +474,7 @@ public class Doctor extends User {
 
         
     public void recordToMedicalRecords(String[] updatedAppointment) {
-        // Load patient info from Patient_List.csv
+        
         String[] patientInfo = null;
         try (BufferedReader br = new BufferedReader(new FileReader(patientListPath))) {
             String line;
@@ -494,28 +495,28 @@ public class Doctor extends User {
             return;
         }
 
-        // Ensure the new columns (Number and Quantity) are properly handled
-        String quantity = "N/A"; // Default value for quantity if not specified elsewhere
+        
+        String quantity = "N/A"; 
         String newRecord = String.join(",", 
-                patientInfo[0],  // Patient ID
-                patientInfo[1],  // Patient Name
-                patientInfo[2],  // Date of Birth
-                patientInfo[3],  // Gender
-                patientInfo[4],  // Blood Type
-                patientInfo[5],  // Contact Info (Email)
-                patientInfo[6],  // Number (New Column from Patient_List.csv)
-                updatedAppointment[2], // Appointment Date
-                hospitalID, // Doctor's Hospital ID
-                staffName,  // Doctor's Name
-                updatedAppointment[3], // Appointment Time
-                updatedAppointment[5], // Diagnosis
-                updatedAppointment[6], // Treatment
-                updatedAppointment[7], // Prescription
-                updatedAppointment[8],   // Quantity (New Column in MedicalRecords.csv)
-                updatedAppointment[10]  // Notes
+                patientInfo[0],  
+                patientInfo[1],  
+                patientInfo[2],  
+                patientInfo[3],  
+                patientInfo[4],  
+                patientInfo[5],  
+                patientInfo[6],  
+                updatedAppointment[2], 
+                hospitalID, 
+                staffName,  
+                updatedAppointment[3], 
+                updatedAppointment[5], 
+                updatedAppointment[6], 
+                updatedAppointment[7], 
+                updatedAppointment[8],   
+                updatedAppointment[10]  
         );
 
-        // Append the record to MedicalRecords.csv
+        
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(medicalRecordsPath, true))) {
             writer.write(newRecord);
             writer.newLine();
