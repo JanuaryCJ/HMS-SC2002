@@ -10,7 +10,7 @@ public class Pharmacist extends User {
     {
         super(hospitalID);
         this.menu = new Inventory(); // Association with Inventory
-        this.record = new AppointmentAction(); 
+        this.record = new AppointmentAction("./Data/Medicine_List.csv"); 
     }
 
     //private String displayStaffName(Administrator admin)
