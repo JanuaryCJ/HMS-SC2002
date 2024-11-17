@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Pharmacist extends User {
 
     protected String staffName;
-    private Inventory menu;
+    private final Inventory menu;
 
     public Pharmacist(String hospitalID)
     {
@@ -16,6 +16,7 @@ public class Pharmacist extends User {
         //return admin.getStaffName(hospitalID, this);
     //}
     
+    @Override
     protected void displayMenu() {
         //Administrator admin = new Administrator(hospitalID);
         //staffName = displayStaffName(admin);
@@ -29,41 +30,31 @@ public class Pharmacist extends User {
         System.out.println("6. Remove Medicine From Inventory");
         System.out.println("7. Logout");
 
-        Scanner scanner = new Scanner(System.in);
-        boolean isRunning = true;
-
-        while (isRunning) {
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    viewAppointmentOutcomeRecord();
-                    break;
-                case 2:
-                    updatePrescriptionStatus();
-                    break;
-                case 3:
-                    viewMedicationInventory();
-                    break;
-                case 4:
-                    submitReplenishmentRequest();
-                    break;
-                case 5:
-                    addNewMedicine();
-                    break;
-                case 6:
-                    deleteMedicine();
-                    break;
-                case 7:
-                    System.out.println("Logging out...");
-                    isRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean isRunning = true;
+            
+            while (isRunning) {
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                
+                switch (choice) {
+                    case 1 -> viewAppointmentOutcomeRecord();
+                    case 2 -> updatePrescriptionStatus();
+                    case 3 -> viewMedicationInventory();
+                    case 4 -> submitReplenishmentRequest();
+                    case 5 -> addNewMedicine();
+                    case 6 -> deleteMedicine();
+                    case 7 -> {
+                        System.out.println("Logging out...");
+                        isRunning = false;
+                    }
+                    default -> System.out.println("Invalid choice. Please try again.");
+                }
             }
         }
-        scanner.close();
+        catch (Exception e) {
+            System.out.println("Something went wrong.");
+        }
     }
 
     // Placeholder methods to demonstrate functionality
@@ -85,15 +76,18 @@ public class Pharmacist extends User {
 
     private void submitReplenishmentRequest() {
         System.out.println("Submitting replenishment request...");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the medicine name: ");
-        String medicineName = scanner.nextLine();
-        System.out.print("Enter the replenishment amount: ");
-        int amount = scanner.nextInt();
-        menu.submitReplenishmentRequest(medicineName, amount);
-        menu.updateMedicineList();
-        System.out.println("Replenishment request submitted...");
-        scanner.close();
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Enter the medicine name: ");
+            String medicineName = scanner.nextLine();
+            System.out.print("Enter the replenishment amount: ");
+            int amount = scanner.nextInt();
+            menu.submitReplenishmentRequest(medicineName, amount);
+            menu.updateMedicineList();
+            System.out.println("Replenishment request submitted...");
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong.");
+        }
     }
     private void addNewMedicine(){
         System.out.println("Adding new medicine to inventory...");
