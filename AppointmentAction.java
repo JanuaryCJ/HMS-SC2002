@@ -48,7 +48,7 @@ public class AppointmentAction implements AppointmentInterface {
         }
         return app;
 	}
-public   List<Appointment> ReadPatientAppointment(){
+	public List<Appointment> ReadPatientAppointment(){
 		
 		List<Appointment> app=new ArrayList<Appointment>();
     	String line;
@@ -79,7 +79,7 @@ public   List<Appointment> ReadPatientAppointment(){
         }
         return app;
 	}
-	public   void addAppointment(String[] data) {
+	public void addAppointment(String[] data) {
 		try (FileWriter writer = new FileWriter(Path,true)) { // 'true' enables append mode
             // Convert data array to CSV row format
             String row = String.join(",", data);
