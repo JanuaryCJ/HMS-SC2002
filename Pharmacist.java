@@ -11,15 +11,15 @@ public class Pharmacist extends User {
         this.menu = new Inventory(); // Association with Inventory
     }
 
-    private String displayStaffName(Administrator admin)
-    {
-        return admin.getStaffName(hospitalID, this);
-    }
+    //private String displayStaffName(Administrator admin)
+    //{
+        //return admin.getStaffName(hospitalID, this);
+    //}
     
     protected void displayMenu() {
-        Administrator admin = new Administrator(hospitalID);
-        staffName = displayStaffName(admin);
-        System.out.println("Welcome Pharmacist, " + staffName);
+        //Administrator admin = new Administrator(hospitalID);
+        //staffName = displayStaffName(admin);
+        //System.out.println("Welcome Pharmacist, " + staffName);
         System.out.println("---- Pharmacist Menu ----");
         System.out.println("1. View Appointment Outcome Record");
         System.out.println("2. Update Prescription Status");
