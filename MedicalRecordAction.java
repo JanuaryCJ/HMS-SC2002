@@ -33,7 +33,7 @@ public class MedicalRecordAction {
 
                 // Check if the first column matches the target value
                 if (values.length > 0 && values[1].equals(Name)) {
-                	MedicalRecord medicalrecord=new MedicalRecord(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9],values[10],values[11],values[12],values[13],values[14]);
+                	MedicalRecord medicalrecord=new MedicalRecord(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9],values[10],values[11],values[12],values[13],values[14],values[15]);
                 	RecordList.add(medicalrecord);
                 	
                 }

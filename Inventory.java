@@ -15,23 +15,18 @@ public class Inventory {
     private static final String CSV_FILE_PATH2 = "./Data/Medical_Equipment_List.csv";
 
     public void addNewMedicine() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Adding a new medicine to the inventory...");
-
-        System.out.print("Enter Medicine Name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Enter Initial Stock: ");
-        int initialStock = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Enter Low Stock Level Alert: ");
-        int lowStockLevelAlert = Integer.parseInt(scanner.nextLine());
-
-        // Create a new Medicine object
-        Medicine newMedicine = new Medicine(name, initialStock, lowStockLevelAlert);
-
-        scanner.close();
+        Medicine newMedicine;
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Adding a new medicine to the inventory...");
+            System.out.print("Enter Medicine Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Initial Stock: ");
+            int initialStock = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter Low Stock Level Alert: ");
+            int lowStockLevelAlert = Integer.parseInt(scanner.nextLine());
+            // Create a new Medicine object
+            newMedicine = new Medicine(name, initialStock, lowStockLevelAlert);
+        }
 
         // Append the new medicine entry to the CSV file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH, true))) {
@@ -77,15 +72,15 @@ public class Inventory {
     }
 
     public void deleteMedicine() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter the Medicine Name to remove from inventory: ");
-        String medicineNameToDelete = scanner.nextLine();
-
-        List<String> updatedData = new ArrayList<>();
-        boolean medicineFound = false;
-
-        scanner.close();
+        String medicineNameToDelete;
+        List<String> updatedData;
+        boolean medicineFound;
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Enter the Medicine Name to remove from inventory: ");
+            medicineNameToDelete = scanner.nextLine();
+            updatedData = new ArrayList<>();
+            medicineFound = false;
+        }
 
         // Read the existing data
         try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {

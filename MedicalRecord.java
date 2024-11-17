@@ -6,6 +6,7 @@ private String DOB;
 private String Gender;
 private String BloodType;
 private String Email;
+private String Number;
 private String AppointmentDate;
 private String Doctor;
 private String DoctorID;
@@ -17,7 +18,7 @@ private String Medicine_status;
 private String Note;
 
 public MedicalRecord(String ID, String Patient, String DOB, String Gender, String BloodType, String Email,
-        String AppointmentDate, String Doctor, String DoctorID, String AppointmentTime,
+        String Number,String AppointmentDate, String Doctor, String DoctorID, String AppointmentTime,
         String Diagnosis, String Treatments, String Prescription, String Medicine_status,
         String Note) {
 this.ID = ID;
@@ -26,6 +27,7 @@ this.DOB = DOB;
 this.Gender = Gender;
 this.BloodType = BloodType;
 this.Email = Email;
+this.Number=Number;
 this.AppointmentDate = AppointmentDate;
 this.Doctor = Doctor;
 this.DoctorID = DoctorID;
@@ -83,7 +85,13 @@ public String getEmail() {
 public void setEmail(String Email) {
     this.Email = Email;
 }
+public String getNumber() {
+    return Number;
+}
 
+public void setNumver(String Number) {
+    this.Number = Number;
+}
 public String getAppointmentDate() {
     return AppointmentDate;
 }

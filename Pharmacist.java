@@ -4,11 +4,13 @@ public class Pharmacist extends User {
 
     protected String staffName;
     private final Inventory menu;
+    private final AppointmentAction record;
 
     public Pharmacist(String hospitalID)
     {
         super(hospitalID);
         this.menu = new Inventory(); // Association with Inventory
+        this.record = new AppointmentAction("./Data/Medicine_List.csv"); 
     }
 
     //private String displayStaffName(Administrator admin)
@@ -60,12 +62,13 @@ public class Pharmacist extends User {
     // Placeholder methods to demonstrate functionality
     private void viewAppointmentOutcomeRecord() {
         System.out.println("Viewing appointment outcome record...");
-        // Add logic here to retrieve and display data
+        record.ReadPatientAppointment();
     }
 
     private void updatePrescriptionStatus() {
         System.out.println("Updating prescription status...");
-        // Add logic here to update prescription status
+        record.viewAndUpdatePrescription();
+
     }
 
     private void viewMedicationInventory() {
