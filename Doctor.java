@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 
 
 public class Doctor extends User {
@@ -13,18 +12,12 @@ public class Doctor extends User {
     private String medicalRecordsPath = "D:/Java_hw/HMS/src/Data/MedicalRecords.csv";
     private String patientListPath = "D:/Java_hw/HMS/src/Data/Patient_List.csv";
     
-    public Doctor(String hospitalID, String staffName) {
-        super(hospitalID);
-        this.staffName = staffName;
-    }
     public Doctor(String hospitalID) {
         super(hospitalID);
-        this.staffName = "Default Doctor"; 
     }
-    private String displayStaffName(Administrator admin) {
-        return admin.getStaffName(hospitalID, this);
-    }
-
+    
+    
+    
     public void viewPatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
 
@@ -72,8 +65,10 @@ public class Doctor extends User {
 
             System.out.println("Medical Records for " + selectedPatient + ":");
 
-           
+            int i=1;
             for (MedicalRecord record : medicalRecords) {
+            	
+            	System.out.println(i++);
                 System.out.println("Patient ID: " + record.getID());
                 System.out.println("Name: " + record.getPatient());
                 System.out.println("Date of Birth: " + record.getDOB());
@@ -90,6 +85,7 @@ public class Doctor extends User {
                 System.out.println("Prescription: " + record.getPrescription());
                 System.out.println("Amount: " + record.getMedicine_status()); 
                 System.out.println("Notes: " + record.getNote());
+                System.out.println("------------------------------------");
                 System.out.println("------------------------------------");
             }
         } else {
@@ -437,24 +433,29 @@ public class Doctor extends User {
     public void updateAppointmentRecord() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
 
-       
+        
         appointmentAction.updateAppointmentRecord(staffName);
 
-        
-        String[] updatedAppointment = fetchUpdatedAppointment();
+        if (appointmentAction.isUpdatedFlag()) {
+            String[] updatedAppointment = fetchUpdatedAppointment();
 
-        if (updatedAppointment != null) {
-            recordToMedicalRecords(updatedAppointment);
+            if (updatedAppointment != null) {
+                recordToMedicalRecords(updatedAppointment);
+            } else {
+                System.out.println("No appointment was updated.");
+            }
         } else {
-            System.out.println("No appointment was updated.");
+            System.out.println("No appointment was updated in the records.");
         }
     }
+
 
     
     private String[] fetchUpdatedAppointment() {
         String[] latestUpdatedAppointment = null;
         String line;
         String csvSeparator = ",";
+        
 
         try (BufferedReader br = new BufferedReader(new FileReader(appointmentsPath))) {
             while ((line = br.readLine()) != null) {
@@ -495,8 +496,7 @@ public class Doctor extends User {
             return;
         }
 
-        
-        String quantity = "N/A"; 
+         
         String newRecord = String.join(",", 
                 patientInfo[0],  
                 patientInfo[1],  
@@ -534,9 +534,10 @@ public class Doctor extends User {
    
     
     protected void displayMenu() {
-        Administrator admin = new Administrator(hospitalID, false);
-        staffName = displayStaffName(admin);
+    	Hospital hospital = new Hospital();
+        staffName = hospital.getName(hospitalID, this);
         System.out.println("Welcome Doctor, " + staffName);
+        
 
         Scanner sc = new Scanner(System.in);
         while (true) {
