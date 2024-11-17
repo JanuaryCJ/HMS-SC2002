@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.*;  
 
-public class Patient extends User {
+public class  Patient extends User {
     
 
     protected String staffName="Alice Brown";
@@ -19,10 +19,10 @@ public class Patient extends User {
         
     }
 
-    private String displayStaffName(Administrator admin)
-    {
-        return admin.getStaffName(hospitalID, this);
-    }
+    /*private String displayStaffName(Administrator admin)
+	{
+	   return admin.getStaffName(hospitalID, this);
+    }*/
     public List<Appointment> PresentAppointment(String staffName) {
     	AppointmentAction appointmentaction=new AppointmentAction(Path);
     	//List<Appointment> app=new ArrayList<Appointment>();
