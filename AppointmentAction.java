@@ -31,7 +31,7 @@ public class AppointmentAction implements AppointmentInterface {
 
                 // Check if the first column matches the target value
                 if (values.length > 0 && values[0].equals(Name)) {
-                	Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5]);
+                	Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9]);
                 	app.add(appointment);
                 	
                 }
@@ -62,7 +62,7 @@ public   List<Appointment> ReadPatientAppointment(){
 
                 // Check if the first column matches the target value
                
-                	Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5]);
+                	Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9]);
                 	app.add(appointment);
                 	
                 
