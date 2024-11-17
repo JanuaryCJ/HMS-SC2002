@@ -16,34 +16,55 @@ public abstract class User extends Hospital {
     //ABSTRACT//
     protected abstract void displayMenu();
 
+
     //GETTER//
     public String getHospitalID() {
         return hospitalID;
     }
 
+    protected static String getRoleIndex(String role) {
+        switch (role.toLowerCase()) {
+            case "doctor":
+                return "D0";
+            case "pharmacist":
+                return "P0";
+            case "administrator":
+                return "A0";
+            case "patient":
+                return "P1";
+            default:
+                return null; 
+        }
+    }
+
+    
+
     //SETTER//
     
 
     //CONSTRUCTOR//
-    public static User assignRole(String hospitalID, String role) {
+    protected static User assignRole(String hospitalID) {
+
+        String role = hospitalID.substring(0, 2);
         switch (role) {
-            case "Patient":
-                 return new Patient(hospitalID);
-            case "Doctor":
+            case "P0":
+                return new Pharmacist(hospitalID); 
+            case "P1":
+                return new Patient(hospitalID); 
+            case "D0":
                  return new Doctor(hospitalID);
-            case "Pharmacist":
-                 return new Pharmacist(hospitalID);
-            case "Administrator":
+            case "A0":
                 return new Administrator(hospitalID,false);
             default:
                 throw new IllegalArgumentException("Unknown role: " + role);
         }
     }
 
-    public static User login(String hospitalID, String role, UserCredentials credentials) {
+
+    public static User login(UserCredentials currentUser) {
         Scanner sc = new Scanner(System.in);
 
-        if (credentials.isMustChangePass()) {
+        if (currentUser.isMustChangePass()) {
             System.out.println("You must change your password:");
             String newPassword;
 
@@ -51,23 +72,52 @@ public abstract class User extends Hospital {
                 System.out.print("Enter new password: ");
                 newPassword = sc.nextLine();
 
-            } while (!validPass(newPassword, credentials));
-            credentials.setMustChangePass(false);
+            } while (!validPass(newPassword, currentUser));
             System.out.println("Password changed successfully.");
         }
 
-        return assignRole(hospitalID, role);
+        if (currentUser.isMustChangeUser())
+        {
+            System.out.println("You must change your password:");
+            String newUsername;
+
+            do {
+                System.out.print("Enter new username: ");
+                newUsername = sc.nextLine();
+
+            } while (!validUser(newUsername, currentUser));
+            System.out.println("Password changed successfully.");
+
+        }
+
+        return assignRole(currentUser.getHospitalID());
     }
 
 
-    public static boolean validPass(String newPassword, UserCredentials credentials) {
+    protected static boolean validPass(String newPassword, UserCredentials currentUser) {
         if (newPassword.length() >= 8) {
-            credentials.setPassword(newPassword);
+            currentUser.setPassword(newPassword);
+            currentUser.setMustChangePass(false);
             return true;
         } else {
             System.out.println("Password must be at least 8 characters long.");
             return false;
         }
     }
+
+    protected static boolean validUser(String newUsername, UserCredentials currentUser)
+    {
+        if (newUsername.length() >= 8) {
+            currentUser.setUsername(newUsername);
+            return true;
+        }
+        else {
+            System.out.println("Username must be at least 8 characters long.");
+            return false;
+        }
+
+    }
+
+
 
 }

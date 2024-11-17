@@ -9,9 +9,9 @@ import java.time.format.DateTimeFormatter;
 public class Doctor extends User {
 
     protected String staffName;
-    private String appointmentsPath = "D:/Java_hw/HMS/src/Data/AppointmentRecord.csv";
-    private String medicalRecordsPath = "D:/Java_hw/HMS/src/Data/MedicalRecords.csv";
-    private String patientListPath = "D:/Java_hw/HMS/src/Data/Patient_List.csv";
+    private String appointmentsPath = "./Data/AppointmentRecord.csv";
+    private String medicalRecordsPath = "./Data/MedicalRecords.csv";
+    private String patientListPath = "./Data/Patient_List.csv";
     
     public Doctor(String hospitalID, String staffName) {
         super(hospitalID);
@@ -21,9 +21,9 @@ public class Doctor extends User {
         super(hospitalID);
         this.staffName = "Default Doctor"; // Set a default value or fetch dynamically
     }
-    private String displayStaffName(Administrator admin) {
-        return admin.getStaffName(hospitalID, this);
-    }
+    // private String displayStaffName(Administrator admin) {
+    //     return admin.getStaffName(hospitalID, this);
+    // }
 
     public void viewPatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
@@ -496,7 +496,7 @@ public class Doctor extends User {
     
     protected void displayMenu() {
         Administrator admin = new Administrator(hospitalID, false);
-        staffName = displayStaffName(admin);
+        //staffName = displayStaffName(admin);
         System.out.println("Welcome Doctor, " + staffName);
 
         Scanner sc = new Scanner(System.in);

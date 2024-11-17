@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -835,6 +834,8 @@ public void ChangeContact() {
         
         Scanner sc = new Scanner(System.in);
         int i=sc.nextInt();
+
+        sc.nextLine();
         switch(i) {
         case 1:
         	{ViewMedicalRecord();
