@@ -419,8 +419,9 @@ public class AppointmentAction implements AppointmentInterface {
     }
 
     public void viewAndUpdatePrescription() {
-        String APPOINTMENT_CSV_FILE = "appointment_record.csv";
+
         String MEDICINE_CSV_FILE = "Medicine_List.csv";
+
         try (Scanner scanner = new Scanner(System.in)) {
             // Prompt user for patient name
             System.out.print("Enter the Patient Name to view and update prescriptions: ");
@@ -430,7 +431,7 @@ public class AppointmentAction implements AppointmentInterface {
             boolean found = false;
 
             // Read the appointment records
-            try (BufferedReader br = new BufferedReader(new FileReader(APPOINTMENT_CSV_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
                 String line;
                 boolean isFirstLine = true;
 
@@ -475,7 +476,7 @@ public class AppointmentAction implements AppointmentInterface {
             boolean updated = false;
 
             // Update appointment record and alter Medicine_List.csv
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(APPOINTMENT_CSV_FILE))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(Path))) {
                 for (String[] record : records) {
                     if (record[0].equalsIgnoreCase(patientName) && record[7].equalsIgnoreCase(medicineName)) {
                         record[9] = prescriptionStatus; // Update prescription status
