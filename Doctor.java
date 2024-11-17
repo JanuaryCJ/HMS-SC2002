@@ -9,9 +9,9 @@ import java.time.format.DateTimeFormatter;
 public class Doctor extends User {
 
     protected String staffName;
-    private String appointmentsPath = "./Data/AppointmentRecord.csv";
-    private String medicalRecordsPath = "./Data/MedicalRecords.csv";
-    private String patientListPath = "./Data/Patient_List.csv";
+    private String appointmentsPath = "D:/Java_hw/HMS/src/Data/AppointmentRecord.csv";
+    private String medicalRecordsPath = "D:/Java_hw/HMS/src/Data/MedicalRecords.csv";
+    private String patientListPath = "D:/Java_hw/HMS/src/Data/Patient_List.csv";
     
     public Doctor(String hospitalID, String staffName) {
         super(hospitalID);
@@ -21,9 +21,9 @@ public class Doctor extends User {
         super(hospitalID);
         this.staffName = "Default Doctor"; // Set a default value or fetch dynamically
     }
-    // private String displayStaffName(Administrator admin) {
-    //     return admin.getStaffName(hospitalID, this);
-    // }
+    private String displayStaffName(Administrator admin) {
+        return admin.getStaffName(hospitalID, this);
+    }
 
     public void viewPatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
@@ -435,8 +435,41 @@ public class Doctor extends User {
     
     public void updateAppointmentRecord() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
+
+        // Call the method to update the appointment
         appointmentAction.updateAppointmentRecord(staffName);
+
+        // Retrieve the updated appointment directly from the CSV after the update
+        String[] updatedAppointment = fetchUpdatedAppointment();
+
+        if (updatedAppointment != null) {
+            recordToMedicalRecords(updatedAppointment);
+        } else {
+            System.out.println("No appointment was updated.");
+        }
     }
+
+    // Fetch the most recently updated appointment for the doctor
+    private String[] fetchUpdatedAppointment() {
+        String[] latestUpdatedAppointment = null;
+        String line;
+        String csvSeparator = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(appointmentsPath))) {
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(csvSeparator);
+                // Check if the appointment belongs to this doctor and is marked as "Completed"
+                if (values.length > 4 && values[1].equals(staffName) && values[4].equals("Completed")) {
+                    latestUpdatedAppointment = values;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading appointments: " + e.getMessage());
+        }
+
+        return latestUpdatedAppointment;
+    }
+
 
         
     public void recordToMedicalRecords(String[] updatedAppointment) {
@@ -461,21 +494,25 @@ public class Doctor extends User {
             return;
         }
 
-        // Create a new record for MedicalRecords.csv
+        // Ensure the new columns (Number and Quantity) are properly handled
+        String quantity = "N/A"; // Default value for quantity if not specified elsewhere
         String newRecord = String.join(",", 
                 patientInfo[0],  // Patient ID
                 patientInfo[1],  // Patient Name
                 patientInfo[2],  // Date of Birth
                 patientInfo[3],  // Gender
                 patientInfo[4],  // Blood Type
-                patientInfo[5],  // Contact Info
+                patientInfo[5],  // Contact Info (Email)
+                patientInfo[6],  // Number (New Column from Patient_List.csv)
                 updatedAppointment[2], // Appointment Date
                 hospitalID, // Doctor's Hospital ID
                 staffName,  // Doctor's Name
                 updatedAppointment[3], // Appointment Time
                 updatedAppointment[5], // Diagnosis
                 updatedAppointment[6], // Treatment
-                updatedAppointment[8]  // Notes
+                updatedAppointment[7], // Prescription
+                updatedAppointment[8],   // Quantity (New Column in MedicalRecords.csv)
+                updatedAppointment[10]  // Notes
         );
 
         // Append the record to MedicalRecords.csv
@@ -491,12 +528,13 @@ public class Doctor extends User {
 
 
 
+
     
    
     
     protected void displayMenu() {
         Administrator admin = new Administrator(hospitalID, false);
-        //staffName = displayStaffName(admin);
+        staffName = displayStaffName(admin);
         System.out.println("Welcome Doctor, " + staffName);
 
         Scanner sc = new Scanner(System.in);
