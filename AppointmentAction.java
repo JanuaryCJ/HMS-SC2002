@@ -10,14 +10,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AppointmentAction implements AppointmentInterface {
-	
-    public AppointmentAction(String Path) {
+	public AppointmentAction(String Path) {
 		this.Path=Path;
 	}
-	
-    private static String Path;
-	
-    public static List<Appointment> ReadPatientAppointment(String Name){
+	private static String Path;
+	public static List<Appointment> ReadPatientAppointment(String Name){
 		
 		List<Appointment> app=new ArrayList<Appointment>();
     	String line;
@@ -48,7 +45,7 @@ public class AppointmentAction implements AppointmentInterface {
         }
         return app;
 	}
-	public List<Appointment> ReadPatientAppointment(){
+public   List<Appointment> ReadPatientAppointment(){
 		
 		List<Appointment> app=new ArrayList<Appointment>();
     	String line;
@@ -79,7 +76,7 @@ public class AppointmentAction implements AppointmentInterface {
         }
         return app;
 	}
-	public void addAppointment(String[] data) {
+	public   void addAppointment(String[] data) {
 		try (FileWriter writer = new FileWriter(Path,true)) { // 'true' enables append mode
             // Convert data array to CSV row format
             String row = String.join(",", data);
@@ -303,6 +300,8 @@ public class AppointmentAction implements AppointmentInterface {
         return true;
     }
     
+    private boolean updatedFlag = false; // Class-level flag to indicate if an update occurred
+
     public void updateAppointmentRecord(String doctorName) {
         List<String[]> confirmedAppointments = new ArrayList<>();
         String line;
@@ -322,6 +321,7 @@ public class AppointmentAction implements AppointmentInterface {
 
         if (confirmedAppointments.isEmpty()) {
             System.out.println("No confirmed appointments to update.");
+            updatedFlag = false; // Explicitly set to false
             return;
         }
 
@@ -340,6 +340,7 @@ public class AppointmentAction implements AppointmentInterface {
 
         if (choice < 0 || choice >= confirmedAppointments.size()) {
             System.out.println("Invalid choice.");
+            updatedFlag = false; // Explicitly set to false
             return;
         }
 
@@ -385,6 +386,7 @@ public class AppointmentAction implements AppointmentInterface {
 
                     // Mark as completed
                     values[4] = "Completed";
+                    updatedFlag = true; // Set the flag to true if an update occurred
 
                     // Print updated record for confirmation
                     System.out.println("Updated Record:");
@@ -413,117 +415,22 @@ public class AppointmentAction implements AppointmentInterface {
             }
         } catch (IOException e) {
             System.err.println("Error updating appointments: " + e.getMessage());
+            return;
         }
 
-        System.out.println("Appointment record updated successfully and marked as Completed.");
-    }
-
-    public void viewAndUpdatePrescription() {
-
-        String MEDICINE_CSV_FILE = "Medicine_List.csv";
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            // Prompt user for patient name
-            System.out.print("Enter the Patient Name to view and update prescriptions: ");
-            String patientName = scanner.nextLine().trim();
-
-            List<String[]> records = new ArrayList<>();
-            boolean found = false;
-
-            // Read the appointment records
-            try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
-                String line;
-                boolean isFirstLine = true;
-
-                while ((line = br.readLine()) != null) {
-                    if (isFirstLine) {
-                        isFirstLine = false; // Skip the header row
-                        records.add(line.split(",")); // Add header row back for rewriting
-                        continue;
-                    }
-                    String[] values = line.split(",");
-                    records.add(values);
-
-                    if (values[0].equalsIgnoreCase(patientName)) {
-                        found = true;
-                        System.out.printf("%-15s %-15s %-15s %-15s %-20s %-15s %-20s %-20s %-15s %-20s %-30s%n",
-                                values[0], values[1], values[2], values[3], values[4], values[5], values[6],
-                                values[7], values[8], values[9], values[10]);
-                    }
-                }
-            } 
-            
-            catch (IOException e) {
-                System.out.println("Error reading the file: " + e.getMessage());
-                return;
-            }
-
-            if (!found) {
-                System.out.println("No records found for patient: " + patientName);
-                return;
-            }
-
-            // Prompt user for prescription update
-            System.out.print("Enter the Prescribed Medicine name to update: ");
-            String medicineName = scanner.nextLine().trim();
-
-            System.out.print("Enter the new Prescription Status (Prescribed/Pending): ");
-            String prescriptionStatus = scanner.nextLine().trim();
-
-            System.out.print("Enter the Medicine Qty: ");
-            int medicineQty = scanner.nextInt();
-
-            boolean updated = false;
-
-            // Update appointment record and alter Medicine_List.csv
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(Path))) {
-                for (String[] record : records) {
-                    if (record[0].equalsIgnoreCase(patientName) && record[7].equalsIgnoreCase(medicineName)) {
-                        record[9] = prescriptionStatus; // Update prescription status
-                        record[8] = String.valueOf(medicineQty); // Update medicine quantity
-                        updated = true;
-                    }
-                    bw.write(String.join(",", record));
-                    bw.newLine();
-                }
-            } catch (IOException e) {
-                System.out.println("Error updating the file: " + e.getMessage());
-                return;
-            }
-
-            if (updated) {
-                // Update Medicine_List.csv
-                try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV_FILE))) {
-                    List<String[]> medicineRecords = new ArrayList<>();
-                    String line;
-
-                    while ((line = br.readLine()) != null) {
-                        String[] values = line.split(",");
-                        if (values[0].equalsIgnoreCase(medicineName)) {
-                            int currentStock = Integer.parseInt(values[2]);
-                            values[2] = String.valueOf(currentStock - medicineQty); // Update current stock
-                        }
-                        medicineRecords.add(values);
-                    }
-
-                    // Write updated data back to Medicine_List.csv
-                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
-                        for (String[] medicineRecord : medicineRecords) {
-                            bw.write(String.join(",", medicineRecord));
-                            bw.newLine();
-                        }
-                    }
-                } catch (IOException e) {
-                    System.out.println("Error updating the Medicine_List.csv: " + e.getMessage());
-                }
-
-                System.out.println("Prescription status and medicine inventory updated successfully.");
-            } else {
-                System.out.println("No matching records found for the specified medicine and patient.");
-            }
-        } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (updatedFlag) {
+            System.out.println("Appointment record updated successfully and marked as Completed.");
+        } else {
+            System.out.println("No updates were made.");
         }
     }
+
+    // Add a getter for the updatedFlag
+    public boolean isUpdatedFlag() {
+        return updatedFlag;
+    }
+
+
+
+
 }
