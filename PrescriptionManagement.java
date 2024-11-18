@@ -15,26 +15,64 @@ public class PrescriptionManagement {
     private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv";
 
     public void addNewMedicine() {
-        Medicine newMedicine;
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Adding a new medicine to the inventory...");
-            System.out.print("Enter Medicine Name: ");
-            String name = scanner.nextLine();
-            System.out.print("Enter Initial Stock: ");
-            int initialStock = Integer.parseInt(scanner.nextLine());
-            System.out.print("Enter Low Stock Level Alert: ");
-            int lowStockLevelAlert = Integer.parseInt(scanner.nextLine());
-            newMedicine = new Medicine(name, initialStock, lowStockLevelAlert);
-        }
+        Scanner scanner = new Scanner(System.in);
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV, true))) {
-            bw.write(newMedicine.toCsvFormat());
-            bw.newLine();
-            System.out.println("New medicine added successfully.");
-        } 
-        
-        catch (IOException e) {
-        System.out.println("Error adding new medicine to file: " + e.getMessage());
+        try {
+            System.out.print("Enter Medicine Name: ");
+            String name = scanner.nextLine().trim();
+
+            if (isMedicineExists(name)) {
+                System.out.println("Medicine already exists in the list.");
+                return;
+            }
+
+            int initialStock = getValidIntegerInput(scanner, "Enter Initial Stock: ");
+            int lowStockLevelAlert = getValidIntegerInput(scanner, "Enter Low Stock Level Alert: ");
+
+            Medicine newMedicine = new Medicine(name, initialStock, lowStockLevelAlert);
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV, true))) {
+                bw.write(newMedicine.toCSVRow());
+                bw.newLine();
+            }
+
+            System.out.println("New medicine '" + name + "' has been added successfully!");
+        } catch (IOException e) {
+            System.out.println("Error updating the file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isMedicineExists(String name) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+            String line;
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                String[] values = line.split(",");
+                if (values.length >= 1 && values[0].equalsIgnoreCase(name)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the file: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private int getValidIntegerInput(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
         }
     }
 
