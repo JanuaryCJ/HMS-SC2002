@@ -1,3 +1,4 @@
-Paracetamol,100,80,20
-Ibuprofen,50,40,10
-Amoxicillin,75,30,15
+Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenishment,Replenishment Approved
+Paracetamol,100,80,20,0,NIL
+Ibuprofen,50,40,10,0,NIL
+Amoxicillin,75,30,15,0,NIL
