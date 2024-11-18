@@ -666,7 +666,8 @@ public void ShowOutcomes(String Name) {
 	
 }
 public void ViewMedicalRecord() {
-	List<MedicalRecord> RecordList=MedicalRecordAction.readCSV(MedicalRecordPath, staffName);
+	MedicalRecordAction mra=new MedicalRecordAction();
+	List<MedicalRecord> RecordList=mra.readCSV(MedicalRecordPath, staffName);
 	System.out.println("ID:"+RecordList.get(0).getID());
 	System.out.println("Name:"+RecordList.get(0).getPatient());
 	System.out.println("Date of birth:"+RecordList.get(0).getDOB());
