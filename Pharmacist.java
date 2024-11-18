@@ -10,14 +10,13 @@ public class Pharmacist extends User {
     }
 
     private void viewAppointmentOutcomeRecord() {
-        AppointmentAction apmenu = new AppointmentAction("C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v1/HMS-SC2002/Data/AppointmentRecord.csv");
+        AppointmentAction apmenu = new AppointmentAction("C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv");
         apmenu.viewAppointmentRecords(); 
     }
 
     private void updatePrescriptionStatus() {
         Inventory menu = new Inventory();
-        System.out.println("Updating prescription status...");
-        menu.viewAndUpdatePrescription();
+        menu.managePatientPrescription();
     }
 
     private void viewMedicationInventory() {

@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class Inventory {
 
-    private static final String CSV_FILE_PATH = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medicine_List.csv";
-    private static final String CSV_FILE_PATH2 = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medical_Equipment_List.csv";
-    private static final String CSV_FILE_PATH3 = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v1/HMS-SC2002/Data/AppointmentRecord.csv";
+    private static final String MEDICINE_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medicine_List1.csv";
+    private static final String EQUIPMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medical_Equipment_List.csv";
+    private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv";
 
     public void addNewMedicine() {
         Medicine newMedicine;
@@ -30,7 +30,7 @@ public class Inventory {
         }
 
         // Append the new medicine entry to the CSV file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV, true))) {
             bw.write(newMedicine.toCsvFormat());
             bw.newLine();
             System.out.println("New medicine added successfully.");
@@ -61,7 +61,7 @@ public class Inventory {
         scanner.close();
 
         // Append the new equipment entry to the CSV file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH2, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(EQUIPMENT_CSV, true))) {
             bw.write(newEquipment.toCsvFormat());
             bw.newLine();
             System.out.println("New medical equipment added successfully.");
@@ -84,7 +84,7 @@ public class Inventory {
         }
 
         // Read the existing data
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -118,7 +118,7 @@ public class Inventory {
         }
 
         // Write the updated data back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
             for (String dataLine : updatedData) {
                 bw.write(dataLine);
                 bw.newLine();
@@ -142,7 +142,7 @@ public class Inventory {
         scanner.close();
 
         // Read the existing data
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH2))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(EQUIPMENT_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -176,7 +176,7 @@ public class Inventory {
         }
 
         // Write the updated data back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH2))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(EQUIPMENT_CSV))) {
             for (String dataLine : updatedData) {
                 bw.write(dataLine);
                 bw.newLine();
@@ -194,7 +194,7 @@ public class Inventory {
                 "Medicine Name", "Initial Stock", "Current Stock",
                 "Low Stock Level Alert", "Request Replenishment", "Replenishment Approved");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -221,7 +221,7 @@ public class Inventory {
                 "Equipment Name", "Initial Stock", "Current Stock",
                 "Low Stock Level Alert", "Request Replenishment", "Replenishment Approval Status", "Last Update");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH2))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(EQUIPMENT_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -248,7 +248,7 @@ public class Inventory {
         List<String[]> csvData = new ArrayList<>();
         boolean medicineFound = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -282,7 +282,7 @@ public class Inventory {
         }
 
         // Write updated data back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
             for (String[] row : csvData) {
                 bw.write(String.join(",", row));
                 bw.newLine();
@@ -296,7 +296,7 @@ public class Inventory {
         List<String[]> csvData = new ArrayList<>();
         boolean medicineFound = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -330,7 +330,7 @@ public class Inventory {
         }
 
         // Write updated data back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
             for (String[] row : csvData) {
                 bw.write(String.join(",", row));
                 bw.newLine();
@@ -346,7 +346,7 @@ public class Inventory {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
 
@@ -407,7 +407,7 @@ public class Inventory {
         }
 
         // Write updated data back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
             for (String[] row : csvData) {
                 bw.write(String.join(",", row));
                 bw.newLine();
@@ -417,144 +417,230 @@ public class Inventory {
         }
     }
 
-    public void viewAndUpdatePrescription() {
+    public void managePatientPrescription() {
         Scanner scanner = new Scanner(System.in);
 
-        // Prompt user for patient name
-        System.out.print("Enter the Patient Name to view and update prescriptions: ");
-        String patientName = scanner.nextLine().trim();
+        // Validate patient name
+        String patientName = null;
+        boolean isValidPatient = false;
+        while (!isValidPatient) {
+            System.out.print("Enter the name of the patient: ");
+            patientName = scanner.nextLine();
 
-        List<String[]> records = new ArrayList<>();
-        boolean found = false;
+            if (isPatientValid(patientName)) {
+                isValidPatient = true;
+            } else {
+                System.out.println("Invalid patient name. Please try again.");
+            }
+        }
 
-        // Read the appointment records
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH3))) {
+        List<String[]> allAppointments = new ArrayList<>();
+        boolean hasPendingAppointments = false;
+
+        // Step 1: Read AppointmentRecord.csv and retrieve "Pending" appointments for the patient
+        try (BufferedReader br = new BufferedReader(new FileReader(APPOINTMENT_CSV))) {
             String line;
             boolean isFirstLine = true;
 
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false; // Skip the header row
-                    records.add(line.split(",")); // Add header row back for rewriting
+                    allAppointments.add(line.split(",")); // Add header row to the list
                     continue;
                 }
-                String[] values = line.split(",");
-                records.add(values);
 
-                if (values[0].equalsIgnoreCase(patientName)) {
-                    found = true;
-                    System.out.printf("%-15s %-15s %-15s %-15s %-20s %-15s %-20s %-20s %-15s %-20s %-30s%n",
-                            values[0], values[1], values[2], values[3], values[4], values[5], values[6],
-                            values[7], values[8], values[9], values[10]);
+                String[] values = line.split(",");
+                allAppointments.add(values);
+
+                if (values.length == 11 && values[0].equalsIgnoreCase(patientName) && values[9].equalsIgnoreCase("Pending")) {
+                    hasPendingAppointments = true;
+
+                    // Display the appointment
+                    System.out.println("\nPending Appointment:");
+                    System.out.println("    Date of Appointment: " + values[2]);
+                    System.out.println("    Time of Appointment: " + values[3]);
+                    System.out.println("    Appointment Status: " + values[4]);
+                    System.out.println("    Patient Diagnosis: " + values[5]);
+                    System.out.println("    Patient Treatment: " + values[6]);
+                    System.out.println("    Prescribed Medication: " + values[7]);
+                    System.out.println("    Medication Quantity: " + values[8]);
+                    System.out.println("    Prescription Status: " + values[9]);
+                    System.out.println("    Remarks: " + values[10]);
+
+                    // Prompt the user for prescription details
+                    boolean validMedication = false;
+                    String medicationName = null;
+                    int medicationQuantity = -1;
+
+                    while (!validMedication) {
+                        System.out.print("Enter Medication Name: ");
+                        medicationName = scanner.nextLine();
+
+                        if (isMedicationValid(medicationName)) {
+                            validMedication = true;
+                        } else {
+                            System.out.println("Invalid medication name. Would you like to retry or exit? (retry/exit): ");
+                            String choice = scanner.nextLine();
+                            if (choice.equalsIgnoreCase("exit")) {
+                                return;
+                            }
+                        }
+                    }
+
+                    boolean validQuantity = false;
+                    while (!validQuantity) {
+                        System.out.print("Enter Medication Quantity: ");
+                        try {
+                            medicationQuantity = Integer.parseInt(scanner.nextLine());
+                            validQuantity = true;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid quantity. Please enter a numeric value.");
+                        }
+                    }
+
+                    System.out.print("Enter Prescription Status (Prescribed/Pending): ");
+                    String prescriptionStatus = scanner.nextLine();
+
+                    // Update the appointment record for this specific entry
+                    values[7] = medicationName;
+                    values[8] = String.valueOf(medicationQuantity);
+                    values[9] = prescriptionStatus;
+
+                    if (prescriptionStatus.equalsIgnoreCase("Prescribed")) {
+                        // Update the Medicine_List.csv for "Prescribed"
+                        boolean stockUpdated = updateMedicineStock(medicationName, medicationQuantity);
+                        if (!stockUpdated) {
+                            System.out.println("Out of Stock, Submit Replenishment Request. Exiting.");
+                            return;
+                        }
+                    } else if (prescriptionStatus.equalsIgnoreCase("Pending")) {
+                        System.out.println("Prescription status set to Pending. Exiting.");
+                        return;
+                    } else {
+                        System.out.println("Invalid prescription status. Exiting.");
+                        return;
+                    }
+                }
+            }
+
+            if (!hasPendingAppointments) {
+                System.out.println("No pending appointments found for the specified patient.");
+                return;
+            }
+
+            // Write updated appointment records back to AppointmentRecord.csv
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(APPOINTMENT_CSV))) {
+                for (String[] record : allAppointments) {
+                    bw.write(String.join(",", record));
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                System.out.println("Error writing to the appointment file: " + e.getMessage());
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading the appointment file: " + e.getMessage());
+        }
+    }
+
+    private boolean isPatientValid(String patientName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(APPOINTMENT_CSV))) {
+            String line;
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false; // Skip the header row
+                    continue;
+                }
+
+                String[] values = line.split(",");
+                if (values.length >= 1 && values[0].equalsIgnoreCase(patientName)) {
+                    return true;
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-            return;
+            System.out.println("Error reading the appointment file: " + e.getMessage());
         }
+        return false;
+    }
 
-        if (!found) {
-            System.out.println("No records found for patient: " + patientName);
-            return;
-        }
+    private boolean isMedicationValid(String medicationName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+            String line;
+            boolean isFirstLine = true;
 
-        // Prompt user for prescription update
-        System.out.print("Enter the Prescribed Medicine name to update: ");
-        String medicineName = scanner.nextLine().trim();
-
-        System.out.print("Enter the new Prescription Status (Prescribed/Pending): ");
-        String prescriptionStatus = scanner.nextLine().trim();
-
-        System.out.print("Enter the Medicine Qty: ");
-        int medicineQty = scanner.nextInt();
-
-        boolean updated = false;
-
-        // Update appointment record and alter Medicine_List.csv
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH3))) {
-            for (String[] record : records) {
-                if (record[0].equalsIgnoreCase(patientName) && record[7].equalsIgnoreCase(medicineName)) {
-                    record[9] = prescriptionStatus; // Update prescription status
-                    record[8] = String.valueOf(medicineQty); // Update medicine quantity
-                    updated = true;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false; // Skip the header row
+                    continue;
                 }
+
+                String[] values = line.split(",");
+                if (values.length >= 1 && values[0].equalsIgnoreCase(medicationName)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the medicine file: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean updateMedicineStock(String medicationName, int medicationQuantity) {
+        List<String[]> medicineRecords = new ArrayList<>();
+        boolean medicineFound = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+            String line;
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false; // Skip the header row
+                    continue;
+                }
+
+                String[] values = line.split(",");
+                if (values.length >= 3 && values[0].equalsIgnoreCase(medicationName)) {
+                    medicineFound = true;
+                    int currentStock = Integer.parseInt(values[2]);
+
+                    if (currentStock >= medicationQuantity) {
+                        // Update the current stock
+                        currentStock -= medicationQuantity;
+                        values[2] = String.valueOf(currentStock);
+                        System.out.println("Medication updated successfully. New stock: " + currentStock);
+                    } else {
+                        System.out.println("Out of Stock.");
+                        return false;
+                    }
+                }
+                medicineRecords.add(values);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the medicine file: " + e.getMessage());
+            return false;
+        }
+
+        if (!medicineFound) {
+            System.out.println("Medication not found in the inventory.");
+            return false;
+        }
+
+        // Write the updated medicine records back to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
+            bw.write("Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenishment,Replenishment Approved,Last Updated");
+            bw.newLine();
+            for (String[] record : medicineRecords) {
                 bw.write(String.join(",", record));
                 bw.newLine();
             }
         } catch (IOException e) {
-            System.out.println("Error updating the file: " + e.getMessage());
-            return;
+            System.out.println("Error writing to the medicine file: " + e.getMessage());
+            return false;
         }
 
-        if (updated) {
-            // Update Medicine_List.csv
-            try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
-                List<String[]> medicineRecords = new ArrayList<>();
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    String[] values = line.split(",");
-                    if (values[0].equalsIgnoreCase(medicineName)) {
-                        int currentStock = Integer.parseInt(values[2]);
-                        values[2] = String.valueOf(currentStock - medicineQty); // Update current stock
-                    }
-                    medicineRecords.add(values);
-                }
-
-                // Write updated data back to Medicine_List.csv
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
-                    for (String[] medicineRecord : medicineRecords) {
-                        bw.write(String.join(",", medicineRecord));
-                        bw.newLine();
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Error updating the Medicine_List.csv: " + e.getMessage());
-            }
-
-            System.out.println("Prescription status and medicine inventory updated successfully.");
-        } else {
-            System.out.println("No matching records found for the specified medicine and patient.");
-        }
-    }
-
-    public void viewAppointmentRecords() {
-        System.out.println("Viewing appointment records...\n");
-    
-        System.out.printf(
-            "%-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-50s%n",
-            "Name of Patient", "Name of Doctor", "Date of Appointment",
-            "Time of Appointment", "Appointment Status", "Patient Diagnosis",
-            "Patient Treatment", "Prescribed Medication", "Medication Quantity",
-            "Prescription Status", "Remarks");
-    
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
-            System.out.println("Debug: File opened successfully.");
-            String line;
-            boolean isFirstLine = true;
-    
-            while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false; // Skip header row
-                    continue;
-                }
-    
-                // Debugging: Print each line
-                System.out.println("Debug: Reading line - " + line);
-    
-                String[] values = line.split(",");
-                if (values.length == 11) {
-                    System.out.printf(
-                        "%-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-50s%n",
-                        values[0], values[1], values[2], values[3], values[4],
-                        values[5], values[6], values[7], values[8], values[9], values[10]);
-                } else {
-                    System.out.println("Invalid row format: " + line);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-            e.printStackTrace();
-        }
+        return true;
     }
 }

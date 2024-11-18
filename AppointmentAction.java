@@ -434,54 +434,41 @@ public   List<Appointment> ReadPatientAppointment(){
 
     public void viewAppointmentRecords() {
         System.out.println("Viewing appointment records...\n");
-
-        // A map to group records by patient names
-        Map<String, List<String[]>> groupedRecords = new TreeMap<>(); // TreeMap to ensure sorted order by patient name
-
+    
+        System.out.printf(
+            "%-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-50s%n",
+            "Name of Patient", "Name of Doctor", "Date of Appointment",
+            "Time of Appointment", "Appointment Status", "Patient Diagnosis",
+            "Patient Treatment", "Prescribed Medication", "Medication Quantity",
+            "Prescription Status", "Remarks");
+    
         try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
+            System.out.println("Debug: File opened successfully.");
             String line;
             boolean isFirstLine = true;
-
-            // Read each line and group by patient name
+    
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false; // Skip header row if it exists
+                    isFirstLine = false; // Skip header row
                     continue;
                 }
-
+    
+                // Debugging: Print each line
+                System.out.println("Debug: Reading line - " + line);
+    
                 String[] values = line.split(",");
                 if (values.length == 11) {
-                    String patientName = values[0]; // Assuming the first column is the patient's name
-                    groupedRecords.putIfAbsent(patientName, new ArrayList<>());
-                    groupedRecords.get(patientName).add(values);
+                    System.out.printf(
+                        "%-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-50s%n",
+                        values[0], values[1], values[2], values[3], values[4],
+                        values[5], values[6], values[7], values[8], values[9], values[10]);
                 } else {
                     System.out.println("Invalid row format: " + line);
                 }
             }
-
-            // Print grouped records
-            for (String patientName : groupedRecords.keySet()) {
-                System.out.println("\nName of Patient: " + patientName);
-                System.out.println("Appointments:");
-
-                // Print the records for the patient in the desired format
-                for (String[] record : groupedRecords.get(patientName)) {
-                    System.out.println("    Name of Doctor: " + record[1]);
-                    System.out.println("    Date of Appointment: " + record[2]);
-                    System.out.println("    Time of Appointment: " + record[3]);
-                    System.out.println("    Appointment Status: " + record[4]);
-                    System.out.println("    Patient Diagnosis: " + record[5]);
-                    System.out.println("    Patient Treatment: " + record[6]);
-                    System.out.println("    Prescribed Medication: " + record[7]);
-                    System.out.println("    Medication Quantity: " + record[8]);
-                    System.out.println("    Prescription Status: " + record[9]);
-                    System.out.println("    Remarks: " + record[10]);
-                    System.out.println(); // Blank line for better separation
-                }
-            }
-
         } catch (IOException e) {
             System.out.println("Error reading the file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

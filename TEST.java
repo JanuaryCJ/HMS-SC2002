@@ -3,9 +3,8 @@ import java.util.*;
 
 public class TEST {
 
-    private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v1/HMS-SC2002/Data/AppointmentRecord.csv";
-    private static final String MEDICINE_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v1/HMS-SC2002/Data/Medicine_List.csv";
-    
+    private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv";
+    private static final String MEDICINE_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medicine_List1.csv";    
 
     public static void managePatientAppointment() {
         Scanner scanner = new Scanner(System.in);
@@ -24,7 +23,7 @@ public class TEST {
             }
         }
 
-        List<String[]> appointmentRecords = new ArrayList<>();
+        List<String[]> allAppointments = new ArrayList<>();
         boolean hasPendingAppointments = false;
 
         // Step 1: Read AppointmentRecord.csv and retrieve "Pending" appointments for the patient
@@ -35,13 +34,15 @@ public class TEST {
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false; // Skip the header row
+                    allAppointments.add(line.split(",")); // Add header row to the list
                     continue;
                 }
 
                 String[] values = line.split(",");
+                allAppointments.add(values);
+
                 if (values.length == 11 && values[0].equalsIgnoreCase(patientName) && values[9].equalsIgnoreCase("Pending")) {
                     hasPendingAppointments = true;
-                    appointmentRecords.add(values);
 
                     // Display the appointment
                     System.out.println("\nPending Appointment:");
@@ -55,7 +56,7 @@ public class TEST {
                     System.out.println("    Prescription Status: " + values[9]);
                     System.out.println("    Remarks: " + values[10]);
 
-                    // Step 2: Prompt the user for prescription details
+                    // Prompt the user for prescription details
                     boolean validMedication = false;
                     String medicationName = null;
                     int medicationQuantity = -1;
@@ -89,13 +90,13 @@ public class TEST {
                     System.out.print("Enter Prescription Status (Prescribed/Pending): ");
                     String prescriptionStatus = scanner.nextLine();
 
-                    // Update Prescription Status in AppointmentRecord.csv
+                    // Update the appointment record for this specific entry
                     values[7] = medicationName;
                     values[8] = String.valueOf(medicationQuantity);
                     values[9] = prescriptionStatus;
 
                     if (prescriptionStatus.equalsIgnoreCase("Prescribed")) {
-                        // Step 3: Update the Medicine_List.csv for "Prescribed"
+                        // Update the Medicine_List.csv for "Prescribed"
                         boolean stockUpdated = updateMedicineStock(medicationName, medicationQuantity);
                         if (!stockUpdated) {
                             System.out.println("Out of Stock, Submit Replenishment Request. Exiting.");
@@ -116,11 +117,9 @@ public class TEST {
                 return;
             }
 
-            // Step 4: Write updated appointment records back to AppointmentRecord.csv
+            // Write updated appointment records back to AppointmentRecord.csv
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(APPOINTMENT_CSV))) {
-                bw.write("Name of Patient,Name of Doctor,Date of Appointment,Time of Appointment,Appointment Status,Patient Diagnosis,Patient Treatment,Prescribed Medication,Medication Quantity,Prescription Status,Remarks");
-                bw.newLine();
-                for (String[] record : appointmentRecords) {
+                for (String[] record : allAppointments) {
                     bw.write(String.join(",", record));
                     bw.newLine();
                 }
