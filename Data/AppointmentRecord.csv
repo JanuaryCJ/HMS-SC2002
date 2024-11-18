@@ -1,7 +1,9 @@
 Alice Brown,Emily Clarke,2/11/2024,1000,Canceled,NIL,NIL,NIL,NIL,NIL,NIL
 Alice Brown,Emily Clarke,3/11/2024,1000,Canceled,NIL,NIL,NIL,NIL,NIL,NIL
-Alice Brown,John Smith,7/11/2024,1200,Completed,Fever,Allergy Test,Loratadine,10,Pending,Patient experienced mild allergic reaction. Antihistamines prescribed.
-Bob Stone,Emily Clarke,3/11/2024,1200,Completed,Headache,Physiotherapy,Ibuprofen,200,Pending,Patient reported lower back pain. Referred to specialist for further evaluation.
+Alice Brown,John Smith,7/10/2024,1200,Completed,Fever,Consultation,Loratadine,10,Pending,Monitor temperature and stay hydrated
+Alice Brown,John Smith,8/10/2024,1300,Completed,Flu,Drink water,Paracetamol,20,Pending,Monitor temperature
+Alice Brown,Emily Clarke,6/10/2024,1000,Completed,Headache,X-Ray,Ibuprofen,30,Pending,Scheduled physiotherapy sessions
+Bob Stone,John Smith,3/10/2024,1700,Completed,Back Pain,Physiotherapy,Ibuprofen,40,Pending,Rest
 Alice Brown,John Smith,2/11/2024,1000,Confirmed,NIL,NIL,NIL,NIL,NIL,NIL
 Alice Brown,John Smith,3/11/2024,1000,Booked,NIL,NIL,NIL,NIL,NIL,NIL
 Bob Stone,John Smith,4/11/2024,1200,Confirmed,NIL,NIL,NIL,NIL,NIL,NIL
