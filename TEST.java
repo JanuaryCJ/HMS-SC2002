@@ -7,6 +7,7 @@ public class TEST {
     private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv";
     private static final String MEDICINE_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medicine_List1.csv";    
 
+
     public void approveReplenishmentRequest() {
         Scanner scanner = new Scanner(System.in);
         boolean validInput;
@@ -19,8 +20,8 @@ public class TEST {
 
             System.out.println("Medicines with 'Pending' Replenishment Requests:\n");
             System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
-                    "Medicine Name", "Initial Stock", "Current Stock", 
-                    "Low Stock Level Alert", "Request Replenishment", 
+                    "Medicine Name", "Initial Stock", "Current Stock",
+                    "Low Stock Level Alert", "Request Replenishment",
                     "Replenishment Approved", "Last Update");
 
             boolean hasPendingRequests = false;
@@ -51,8 +52,23 @@ public class TEST {
             }
 
             // Get user input for medicine name
-            System.out.print("\nEnter the Medicine Name to process: ");
-            String inputMedicine = scanner.nextLine().trim();
+            String inputMedicine;
+            do {
+                System.out.print("\nEnter the Medicine Name to process: ");
+                inputMedicine = scanner.nextLine().trim();
+
+                if (!isMedicineValid(inputMedicine)) {
+                    System.out.println("Invalid Medicine Name.");
+                    System.out.print("Do you want to retry or quit? (Type 'Retry' to try again or 'Quit' to exit): ");
+                    String choice = scanner.nextLine().trim();
+                    if (choice.equalsIgnoreCase("Quit")) {
+                        System.out.println("Exiting replenishment approval process.");
+                        return;
+                    }
+                } else {
+                    break;
+                }
+            } while (true);
 
             // Process approval or rejection
             validInput = false;
@@ -99,6 +115,28 @@ public class TEST {
             System.out.println("Error accessing the file: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private boolean isMedicineValid(String medicineName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+            String line;
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                String[] values = line.split(",");
+                if (values.length >= 1 && values[0].equalsIgnoreCase(medicineName)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error validating medicine: " + e.getMessage());
+        }
+        return false;
     }
 
     public static void main(String[] args) {
