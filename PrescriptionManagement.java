@@ -22,7 +22,7 @@ public class PrescriptionManagement {
             System.out.print("Enter Medicine Name: ");
             String name = scanner.nextLine().trim();
 
-            if (isMedicineExists(name)) {
+            if (isMedicineValid(name)) {
                 System.out.println("Medicine already exists in the list.");
                 return;
             }
@@ -41,39 +41,6 @@ public class PrescriptionManagement {
         } catch (IOException e) {
             System.out.println("Error updating the file: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private boolean isMedicineExists(String name) {
-        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
-            String line;
-            boolean isFirstLine = true;
-
-            while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue;
-                }
-
-                String[] values = line.split(",");
-                if (values.length >= 1 && values[0].equalsIgnoreCase(name)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-        }
-        return false;
-    }
-
-    private int getValidIntegerInput(Scanner scanner, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-            }
         }
     }
 
@@ -304,7 +271,6 @@ public class PrescriptionManagement {
                 }
             }
 
-            // Update the file
             StringBuilder finalFileContent = new StringBuilder();
             String[] rows = updatedFileContent.toString().split("\n");
             for (String row : rows) {
@@ -494,6 +460,17 @@ public class PrescriptionManagement {
             System.out.println("Error reading the appointment file: " + e.getMessage());
         }
         return false;
+    }
+
+    private int getValidIntegerInput(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
     }
 
     private boolean updateMedicineStock(String medicationName, int medicationQuantity) {
