@@ -128,95 +128,161 @@ public class PrescriptionManagement {
         }
     }
 
-    public void submitReplenishmentRequest(String medicineName, int replenishmentAmount) {
-        List<String[]> csvData = new ArrayList<>();
-        boolean medicineFound = false;
+    public void submitReplenishmentRequest() {
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+            StringBuilder updatedFileContent = new StringBuilder();
             String line;
             boolean isFirstLine = true;
 
+            System.out.println("Submit Replenishment Request:");
+            System.out.print("Enter Medicine Name: ");
+            String inputMedicine = scanner.nextLine().trim();
+
+            int inputQuantity = 0;
+            while (!validInput) {
+                System.out.print("Enter Quantity: ");
+                String quantityStr = scanner.nextLine().trim();
+                try {
+                    inputQuantity = Integer.parseInt(quantityStr);
+                    if (inputQuantity <= 0) {
+                        System.out.println("Quantity must be a positive number.");
+                    } else {
+                        validInput = true;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Quantity must be a numeric value.");
+                }
+            }
+
+            boolean medicineFound = false;
 
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                
                 if (isFirstLine) {
+                    updatedFileContent.append(line).append("\n");
                     isFirstLine = false;
-                } else {
-
-                    if (values[0].equalsIgnoreCase(medicineName)) {
-                        values[4] = String.valueOf(replenishmentAmount); 
-                        medicineFound = true;
-                        System.out.println("Replenishment request updated for " + medicineName + " to " + replenishmentAmount);
-                    }
+                    continue;
                 }
 
-                csvData.add(values);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-            return;
-        }
+                if (values[0].equalsIgnoreCase(inputMedicine)) {
+                    medicineFound = true;
 
-        if (!medicineFound) {
-            System.out.println("Medicine " + medicineName + " not found in inventory.");
-            return;
-        }
+                    values[4] = String.valueOf(inputQuantity); 
+                    values[5] = "Pending"; 
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
-            for (String[] row : csvData) {
-                bw.write(String.join(",", row));
-                bw.newLine();
+                    updatedFileContent.append(String.join(",", values)).append("\n");
+                } else {
+                    updatedFileContent.append(line).append("\n");
+                }
             }
+
+            if (!medicineFound) {
+                System.out.println("Error: Medicine not found in the inventory.");
+                return;
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
+                bw.write(updatedFileContent.toString());
+            }
+
+            System.out.println("Replenishment request submitted successfully!");
+
         } catch (IOException e) {
-            System.out.println("Error writing to the file: " + e.getMessage());
+            System.out.println("Error accessing the file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void approveSubmissionRequest(String medicineName, String approvalStatus) {
-        List<String[]> csvData = new ArrayList<>();
-        boolean medicineFound = false;
+    public class MedicineReplenishmentApproval {
 
-        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
-            String line;
-            boolean isFirstLine = true;
-
-            // Read all lines from the file
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                
-                // Check if it's the header row
-                if (isFirstLine) {
-                    isFirstLine = false;
-                } else {
-                    // Check if the current row matches the medicine name
-                    if (values[0].equalsIgnoreCase(medicineName)) {
-                        values[5] = approvalStatus; // Update the sixth column
-                        medicineFound = true;
-                        System.out.println("Replenishment request for " + medicineName + " marked as " + approvalStatus);
+        private static final String MEDICINE_CSV = "Medicine_List.csv";
+    
+        public void approveReplenishmentRequest() {
+            Scanner scanner = new Scanner(System.in);
+            boolean validInput;
+    
+            try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+                StringBuilder updatedFileContent = new StringBuilder();
+                String line;
+                boolean isFirstLine = true;
+    
+                System.out.println("Medicines with 'Pending' Replenishment Requests:\n");
+                System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
+                        "Medicine Name", "Initial Stock", "Current Stock", 
+                        "Low Stock Level Alert", "Request Replenishment", 
+                        "Replenishment Approved", "Last Update");
+    
+                boolean hasPendingRequests = false;
+    
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");
+                    if (isFirstLine) {
+                        updatedFileContent.append(line).append("\n");
+                        isFirstLine = false;
+                        continue;
+                    }
+    
+                    if (values.length == 7 && values[5].equalsIgnoreCase("Pending")) {
+                        hasPendingRequests = true;
+                        System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
+                                values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
+                    }
+    
+                    updatedFileContent.append(line).append("\n");
+                }
+    
+                if (!hasPendingRequests) {
+                    System.out.println("\nNo pending replenishment requests found.");
+                    return;
+                }
+    
+                System.out.print("\nEnter the Medicine Name to process: ");
+                String inputMedicine = scanner.nextLine().trim();
+    
+                validInput = false;
+                String approvalStatus = "";
+                while (!validInput) {
+                    System.out.print("Approve or Reject Replenishment Request (Type 'Approve' or 'Reject'): ");
+                    approvalStatus = scanner.nextLine().trim();
+                    if (approvalStatus.equalsIgnoreCase("Approve") || approvalStatus.equalsIgnoreCase("Reject")) {
+                        validInput = true;
+                    } else {
+                        System.out.println("Invalid input. Please type 'Approve' or 'Reject'.");
                     }
                 }
-
-                // Add row to in-memory data structure
-                csvData.add(values);
+    
+                StringBuilder finalFileContent = new StringBuilder();
+                String[] rows = updatedFileContent.toString().split("\n");
+                for (String row : rows) {
+                    String[] values = row.split(",");
+                    if (values.length == 7 && values[0].equalsIgnoreCase(inputMedicine)) {
+                        if (approvalStatus.equalsIgnoreCase("Approve")) {
+                            values[6] = "Approved, " + java.time.LocalDateTime.now();
+                            values[1] = String.valueOf(Integer.parseInt(values[1]) + Integer.parseInt(values[4]));
+                            values[2] = values[1];
+                            values[4] = "0";
+                            values[5] = "NIL";
+                        } else if (approvalStatus.equalsIgnoreCase("Reject")) {
+                            values[6] = "Rejected, " + java.time.LocalDateTime.now();
+                            values[4] = "0";
+                            values[5] = "NIL";
+                        }
+                    }
+                    finalFileContent.append(String.join(",", values)).append("\n");
+                }
+    
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
+                    bw.write(finalFileContent.toString());
+                }
+    
+                System.out.println("Replenishment request for '" + inputMedicine + "' has been " + approvalStatus + ".");
+            } catch (IOException e) {
+                System.out.println("Error accessing the file: " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-            return;
-        }
-
-        if (!medicineFound) {
-            System.out.println("Medicine " + medicineName + " not found in inventory.");
-            return;
-        }
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
-            for (String[] row : csvData) {
-                bw.write(String.join(",", row));
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing to the file: " + e.getMessage());
         }
     }
 
