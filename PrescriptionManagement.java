@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -77,56 +78,57 @@ public class PrescriptionManagement {
     }
 
     public void deleteMedicine() {
-        String medicineNameToDelete;
-        List<String> updatedData;
-        boolean medicineFound;
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("Enter the Medicine Name to remove from inventory: ");
-            medicineNameToDelete = scanner.nextLine();
-            updatedData = new ArrayList<>();
-            medicineFound = false;
-        }
+        Scanner scanner = new Scanner(System.in);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
+        System.out.print("Enter Medicine Name to delete: ");
+        String medicineName = scanner.nextLine().trim();
+
+        File inputFile = new File(MEDICINE_CSV);
+        File tempFile = new File("Temp_" + MEDICINE_CSV);
+
+        boolean medicineFound = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
+
             String line;
             boolean isFirstLine = true;
 
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    updatedData.add(line);
+                    bw.write(line);
+                    bw.newLine();
                     isFirstLine = false;
                     continue;
                 }
 
                 String[] values = line.split(",");
-                String medicineName = values[0];
-
-                if (!medicineName.equalsIgnoreCase(medicineNameToDelete)) {
-                    updatedData.add(line);
-                } else {
+                if (values.length >= 1 && values[0].equalsIgnoreCase(medicineName)) {
                     medicineFound = true;
-                    System.out.println("Medicine '" + medicineNameToDelete + "' has been deleted from the inventory.");
+                    System.out.println("Medicine '" + medicineName + "' found and deleted.");
+                } else {
+                    bw.write(line);
+                    bw.newLine();
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-            return;
+            System.out.println("Error processing the file: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        if (!medicineFound) {
-            System.out.println("Medicine '" + medicineNameToDelete + "' not found in the inventory.");
-            return;
-        }
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
-            for (String dataLine : updatedData) {
-                bw.write(dataLine);
-                bw.newLine();
+        if (medicineFound) {
+            if (inputFile.delete()) {
+                if (tempFile.renameTo(inputFile)) {
+                    System.out.println("Medicine list updated successfully.");
+                } else {
+                    System.out.println("Error renaming the temp file.");
+                }
+            } else {
+                System.out.println("Error deleting the original file.");
             }
-        } 
-        
-        catch (IOException e) {
-            System.out.println("Error writing to the file: " + e.getMessage());
+        } else {
+            System.out.println("Medicine '" + medicineName + "' not found in the list.");
+            tempFile.delete();
         }
     }
 
@@ -139,13 +141,12 @@ public class PrescriptionManagement {
     
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false; // Skip the header row
+                    isFirstLine = false;
                     continue;
                 }
     
                 String[] values = line.split(",");
-                if (values.length == 7) { // Expecting 7 columns
-                    // Print each row in the desired format
+                if (values.length == 7) { 
                     System.out.println("Medicine Name: " + values[0]);
                     System.out.println("Initial Stock: " + values[1]);
                     System.out.println("Current Stock: " + values[2]);
