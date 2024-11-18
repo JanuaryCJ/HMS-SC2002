@@ -199,13 +199,9 @@ public class Inventory {
             String line;
             boolean isFirstLine = true;
     
-            // Debug: Confirm file read started
-            System.out.println("Reading file: " + MEDICINE_CSV);
-    
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false; // Skip the header row
-                    System.out.println("Skipped header row");
+                    isFirstLine = false;
                     continue;
                 }
     
