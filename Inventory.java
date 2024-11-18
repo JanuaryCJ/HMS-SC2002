@@ -505,15 +505,13 @@ public class Inventory {
                                 }
                             }
 
-                            System.out.print("Enter Prescription Status (Prescribed/Pending): ");
+                            System.out.print("Enter Prescription Status (Dispensed/Pending): ");
                             String prescriptionStatus = scanner.nextLine();
 
-                            // Update the appointment record for this specific entry
                             values[8] = String.valueOf(medicationQuantity);
                             values[9] = prescriptionStatus;
 
-                            if (prescriptionStatus.equalsIgnoreCase("Prescribed")) {
-                                // Update the Medicine_List.csv for "Prescribed"
+                            if (prescriptionStatus.equalsIgnoreCase("Dispensed")) {
                                 boolean stockUpdated = updateMedicineStock(medicationName, medicationQuantity);
                                 if (!stockUpdated) {
                                     System.out.println("Out of Stock, Submit Replenishment Request. Exiting.");
@@ -536,7 +534,6 @@ public class Inventory {
                 return;
             }
 
-            // Write updated appointment records back to AppointmentRecord.csv
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(APPOINTMENT_CSV))) {
                 for (String[] record : allAppointments) {
                     bw.write(String.join(",", record));
@@ -558,7 +555,7 @@ public class Inventory {
 
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false; // Skip the header row
+                    isFirstLine = false;
                     continue;
                 }
 
@@ -583,7 +580,7 @@ public class Inventory {
 
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false; // Skip the header row
+                    isFirstLine = false;
                     continue;
                 }
 
@@ -593,7 +590,6 @@ public class Inventory {
                     int currentStock = Integer.parseInt(values[2]);
 
                     if (currentStock >= medicationQuantity) {
-                        // Update the current stock
                         currentStock -= medicationQuantity;
                         values[2] = String.valueOf(currentStock);
                         System.out.println("Medication updated successfully. New stock: " + currentStock);
@@ -614,7 +610,6 @@ public class Inventory {
             return false;
         }
 
-        // Write the updated medicine records back to the file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
             bw.write("Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenishment,Replenishment Approved,Last Updated");
             bw.newLine();
