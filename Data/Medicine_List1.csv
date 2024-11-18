@@ -2,4 +2,4 @@ Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenis
 Paracetamol,19000,5880,150,0,NIL,NIL
 Ibuprofen,9550,5140,150,500,NIL,NIL
 Amoxicillin,9575,5530,150,0,NIL,NIL
-Loratadine,19300,12190,150,0,NIL,NIL
+Loratadine,19300,12190,150,500,NIL,NIL
