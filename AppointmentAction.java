@@ -432,7 +432,7 @@ public   List<Appointment> ReadPatientAppointment(){
         return updatedFlag;
     }
 
-    public static void viewAppointmentRecords() {
+    public void viewAppointmentRecords() {
         System.out.println("Viewing appointment records...\n");
 
         // A map to group records by patient names
