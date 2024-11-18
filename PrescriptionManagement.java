@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 public class PrescriptionManagement {
 
-    private static final String MEDICINE_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/Medicine_List1.csv";
-    private static final String APPOINTMENT_CSV = "C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv";
+    private static final String MEDICINE_CSV = "./Data/Medicine_List.csv";
+    private static final String APPOINTMENT_CSV = "./Data/AppointmentRecord.csv";
 
     public void addNewMedicine() {
         Scanner scanner = new Scanner(System.in);
@@ -240,7 +240,6 @@ public class PrescriptionManagement {
         Scanner scanner = new Scanner(System.in);
 
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
-            // Read the entire CSV file and store its content
             StringBuilder updatedFileContent = new StringBuilder();
             String line;
             boolean isFirstLine = true;
@@ -253,7 +252,6 @@ public class PrescriptionManagement {
 
             boolean hasPendingRequests = false;
 
-            // Iterate through the file to find medicines with "Pending" status
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 if (isFirstLine) {
@@ -264,12 +262,10 @@ public class PrescriptionManagement {
 
                 if (values.length == 7 && values[5].equalsIgnoreCase("Pending")) {
                     hasPendingRequests = true;
-                    // Print the pending replenishment row
+
                     System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
                             values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
                 }
-
-                // Add to updated content for later processing
                 updatedFileContent.append(line).append("\n");
             }
 
@@ -278,7 +274,6 @@ public class PrescriptionManagement {
                 return;
             }
 
-            // Get user input for medicine name
             String inputMedicine;
             do {
                 System.out.print("\nEnter the Medicine Name to process: ");
@@ -297,7 +292,6 @@ public class PrescriptionManagement {
                 }
             } while (true);
 
-            // Process approval or rejection
             boolean validInput = false;
             String approvalStatus = "";
             while (!validInput) {
@@ -317,21 +311,20 @@ public class PrescriptionManagement {
                 String[] values = row.split(",");
                 if (values.length == 7 && values[0].equalsIgnoreCase(inputMedicine)) {
                     if (approvalStatus.equalsIgnoreCase("Approve")) {
-                        values[6] = "Approved on " + LocalDateTime.now(); // Update with date and time
+                        values[6] = "Approved on " + LocalDateTime.now();
                         values[1] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Update Initial Stock
                         values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Sync Current Stock
-                        values[4] = "0"; // Reset Request Replenishment
-                        values[5] = "NIL"; // Reset Replenishment Approved
+                        values[4] = "0";
+                        values[5] = "NIL";
                     } else if (approvalStatus.equalsIgnoreCase("Reject")) {
-                        values[6] = "Rejected on " + LocalDateTime.now(); // Update with date and time
-                        values[4] = "0"; // Reset Request Replenishment
-                        values[5] = "NIL"; // Reset Replenishment Approved
+                        values[6] = "Rejected on " + LocalDateTime.now();
+                        values[4] = "0";
+                        values[5] = "NIL";
                     }
                 }
                 finalFileContent.append(String.join(",", values)).append("\n");
             }
 
-            // Write the updated content back to the CSV file
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
                 bw.write(finalFileContent.toString());
             }

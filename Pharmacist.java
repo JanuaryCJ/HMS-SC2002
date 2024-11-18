@@ -10,7 +10,7 @@ public class Pharmacist extends User {
     }
 
     private void viewAppointmentOutcomeRecord() {
-        AppointmentAction apmenu = new AppointmentAction("C:/Users/mingh/OneDrive/Desktop/Y2S1/sc2002 oop/PROJECT_2002_v2/HMS-SC2002/Data/AppointmentRecord1.csv");
+        AppointmentAction apmenu = new AppointmentAction("./Data/AppointmentRecord.csv");
         apmenu.viewAppointmentRecords(); 
     }
 

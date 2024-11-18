@@ -1,5 +1,5 @@
 Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenishment,Replenishment Approved
-Paracetamol,1000,880,50,0,NIL
-Ibuprofen,550,540,50,0,NIL
-Amoxicillin,575,530,50,0,NIL
-Loratadine,1300,1200,50,0,NIL
+Paracetamol,11000,10880,50,0,NIL
+Ibuprofen,12550,9540,50,0,NIL
+Amoxicillin,13575,10530,50,0,NIL
+Loratadine,21300,11200,50,0,NIL
