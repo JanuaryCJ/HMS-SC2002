@@ -1,6 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
-
     
 public class TEST {
     
@@ -10,7 +10,6 @@ public class TEST {
 
     public void approveReplenishmentRequest() {
         Scanner scanner = new Scanner(System.in);
-        boolean validInput;
 
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             // Read the entire CSV file and store its content
@@ -71,7 +70,7 @@ public class TEST {
             } while (true);
 
             // Process approval or rejection
-            validInput = false;
+            boolean validInput = false;
             String approvalStatus = "";
             while (!validInput) {
                 System.out.print("Approve or Reject Replenishment Request (Type 'Approve' or 'Reject'): ");
@@ -90,16 +89,15 @@ public class TEST {
                 String[] values = row.split(",");
                 if (values.length == 7 && values[0].equalsIgnoreCase(inputMedicine)) {
                     if (approvalStatus.equalsIgnoreCase("Approve")) {
-                        values[6] = "Approved, " + java.time.LocalDateTime.now();
-                        // Update initial stock to reflect replenishment
-                        values[1] = String.valueOf(Integer.parseInt(values[1]) + Integer.parseInt(values[4]));
-                        values[2] = values[1]; // Sync current stock with initial stock
-                        values[4] = "0"; // Reset request replenishment
-                        values[5] = "NIL"; // Reset replenishment approved column
+                        values[6] = "Approved on " + LocalDateTime.now(); // Update with date and time
+                        values[1] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Update Initial Stock
+                        values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Sync Current Stock
+                        values[4] = "0"; // Reset Request Replenishment
+                        values[5] = "NIL"; // Reset Replenishment Approved
                     } else if (approvalStatus.equalsIgnoreCase("Reject")) {
-                        values[6] = "Rejected, " + java.time.LocalDateTime.now();
-                        values[4] = "0"; // Reset request replenishment
-                        values[5] = "NIL"; // Reset replenishment approved column
+                        values[6] = "Rejected on " + LocalDateTime.now(); // Update with date and time
+                        values[4] = "0"; // Reset Request Replenishment
+                        values[5] = "NIL"; // Reset Replenishment Approved
                     }
                 }
                 finalFileContent.append(String.join(",", values)).append("\n");
