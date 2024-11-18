@@ -15,41 +15,41 @@ public class Pharmacist extends User {
     }
 
     private void updatePrescriptionStatus() {
-        Inventory menu = new Inventory();
-        menu.managePatientPrescription();
+        PrescriptionManagement prescription = new PrescriptionManagement();
+        prescription.managePatientPrescription();
     }
 
     private void viewMedicationInventory() {
-        Inventory menu = new Inventory();
-        menu.viewMedicationInventory();
+        PrescriptionManagement prescription = new PrescriptionManagement();
+        prescription.viewMedicationInventory();
     }
 
     private void submitReplenishmentRequest() {
-        Inventory menu = new Inventory();
+        PrescriptionManagement prescription = new PrescriptionManagement();
         System.out.println("Submitting replenishment request...");
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("Enter the medicine name: ");
             String medicineName = scanner.nextLine();
             System.out.print("Enter the replenishment amount: ");
             int amount = scanner.nextInt();
-            menu.submitReplenishmentRequest(medicineName, amount);
-            menu.updateMedicineList();
+            prescription.submitReplenishmentRequest(medicineName, amount);
             System.out.println("Replenishment request submitted...");
         }
         catch (Exception e) {
             System.out.println("Something went wrong.");
         }
     }
+    
     private void addNewMedicine(){
-        Inventory menu = new Inventory();
+        PrescriptionManagement prescription = new PrescriptionManagement();
         System.out.println("Adding new medicine to inventory...");
-        menu.addNewMedicine();
+        prescription.addNewMedicine();
     }
 
     private void deleteMedicine(){
-        Inventory menu = new Inventory();
+        PrescriptionManagement prescription = new PrescriptionManagement();
         System.out.println("Removing medicine from inventory...");
-        menu.deleteMedicine();
+        prescription.deleteMedicine();
     }
 
     //for approval
