@@ -467,58 +467,55 @@ public class Inventory {
                     System.out.println("    Prescription Status: " + values[9]);
                     System.out.println("    Remarks: " + values[10]);
 
-                    // Prompt the user for prescription details
                     boolean validMedication = false;
-                    String medicationName = null;
-                    int medicationQuantity = -1;
-
                     while (!validMedication) {
                         System.out.print("Enter Medication Name: ");
-                        medicationName = scanner.nextLine();
+                        String medicationName = scanner.nextLine();
 
-                        if (isMedicationValid(medicationName)) {
-                            validMedication = true;
-                        } else {
-                            System.out.println("Invalid medication name. Would you like to retry or exit? (retry/exit): ");
+                        // Validate that the input medication matches the "Prescribed Medication"
+                        if (!medicationName.equalsIgnoreCase(values[7])) {
+                            System.out.println("Incorrect Prescribed Medication. Would you like to retry or exit? (retry/exit): ");
                             String choice = scanner.nextLine();
                             if (choice.equalsIgnoreCase("exit")) {
                                 return;
                             }
+                        } else {
+                            validMedication = true;
+
+                            boolean validQuantity = false;
+                            int medicationQuantity = -1;
+                            while (!validQuantity) {
+                                System.out.print("Enter Medication Quantity: ");
+                                try {
+                                    medicationQuantity = Integer.parseInt(scanner.nextLine());
+                                    validQuantity = true;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid quantity. Please enter a numeric value.");
+                                }
+                            }
+
+                            System.out.print("Enter Prescription Status (Prescribed/Pending): ");
+                            String prescriptionStatus = scanner.nextLine();
+
+                            // Update the appointment record for this specific entry
+                            values[8] = String.valueOf(medicationQuantity);
+                            values[9] = prescriptionStatus;
+
+                            if (prescriptionStatus.equalsIgnoreCase("Prescribed")) {
+                                // Update the Medicine_List.csv for "Prescribed"
+                                boolean stockUpdated = updateMedicineStock(medicationName, medicationQuantity);
+                                if (!stockUpdated) {
+                                    System.out.println("Out of Stock, Submit Replenishment Request. Exiting.");
+                                    return;
+                                }
+                            } else if (prescriptionStatus.equalsIgnoreCase("Pending")) {
+                                System.out.println("Prescription status set to Pending. Exiting.");
+                                return;
+                            } else {
+                                System.out.println("Invalid prescription status. Exiting.");
+                                return;
+                            }
                         }
-                    }
-
-                    boolean validQuantity = false;
-                    while (!validQuantity) {
-                        System.out.print("Enter Medication Quantity: ");
-                        try {
-                            medicationQuantity = Integer.parseInt(scanner.nextLine());
-                            validQuantity = true;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid quantity. Please enter a numeric value.");
-                        }
-                    }
-
-                    System.out.print("Enter Prescription Status (Prescribed/Pending): ");
-                    String prescriptionStatus = scanner.nextLine();
-
-                    // Update the appointment record for this specific entry
-                    values[7] = medicationName;
-                    values[8] = String.valueOf(medicationQuantity);
-                    values[9] = prescriptionStatus;
-
-                    if (prescriptionStatus.equalsIgnoreCase("Prescribed")) {
-                        // Update the Medicine_List.csv for "Prescribed"
-                        boolean stockUpdated = updateMedicineStock(medicationName, medicationQuantity);
-                        if (!stockUpdated) {
-                            System.out.println("Out of Stock, Submit Replenishment Request. Exiting.");
-                            return;
-                        }
-                    } else if (prescriptionStatus.equalsIgnoreCase("Pending")) {
-                        System.out.println("Prescription status set to Pending. Exiting.");
-                        return;
-                    } else {
-                        System.out.println("Invalid prescription status. Exiting.");
-                        return;
                     }
                 }
             }
@@ -561,28 +558,6 @@ public class Inventory {
             }
         } catch (IOException e) {
             System.out.println("Error reading the appointment file: " + e.getMessage());
-        }
-        return false;
-    }
-
-    private boolean isMedicationValid(String medicationName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
-            String line;
-            boolean isFirstLine = true;
-
-            while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false; // Skip the header row
-                    continue;
-                }
-
-                String[] values = line.split(",");
-                if (values.length >= 1 && values[0].equalsIgnoreCase(medicationName)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading the medicine file: " + e.getMessage());
         }
         return false;
     }
@@ -643,4 +618,5 @@ public class Inventory {
 
         return true;
     }
+
 }
