@@ -191,9 +191,6 @@ public class Inventory {
 
     public void viewMedicationInventory() {
         System.out.println("Viewing medication inventory...\n");
-        System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
-                "Medicine Name", "Initial Stock", "Current Stock",
-                "Low Stock Level Alert", "Request Replenishment", "Replenishment Approved", "Last Update");
     
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
@@ -201,16 +198,22 @@ public class Inventory {
     
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    isFirstLine = false;
+                    isFirstLine = false; // Skip the header row
                     continue;
                 }
     
                 String[] values = line.split(",");
-                if (values.length == 7) { // Expecting 7 columns now
-                    System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
-                            values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
+                if (values.length == 7) { // Expecting 7 columns
+                    // Print each row in the desired format
+                    System.out.println("Medicine Name: " + values[0]);
+                    System.out.println("Initial Stock: " + values[1]);
+                    System.out.println("Current Stock: " + values[2]);
+                    System.out.println("Low Stock Level Alert: " + values[3]);
+                    System.out.println("Request Replenishment: " + values[4]);
+                    System.out.println("Replenishment Approved: " + values[5]);
+                    System.out.println("Last Update: " + values[6]);
+                    System.out.println("---------------------------------------------------");
                 } else {
-                    // Debug: Print error for malformed row
                     System.out.println("Invalid row format: " + line);
                 }
             }
