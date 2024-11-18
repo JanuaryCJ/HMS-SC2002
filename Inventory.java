@@ -191,31 +191,31 @@ public class Inventory {
 
     public void viewMedicationInventory() {
         System.out.println("Viewing medication inventory...\n");
-        System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s%n",
+        System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
                 "Medicine Name", "Initial Stock", "Current Stock",
-                "Low Stock Level Alert", "Request Replenishment", "Replenishment Approved");
-
+                "Low Stock Level Alert", "Request Replenishment", "Replenishment Approved", "Last Update");
+    
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             String line;
             boolean isFirstLine = true;
-
+    
             // Debug: Confirm file read started
             System.out.println("Reading file: " + MEDICINE_CSV);
-
+    
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false; // Skip the header row
                     System.out.println("Skipped header row");
                     continue;
                 }
-
+    
                 // Debug: Print the raw line being processed
                 System.out.println("Processing line: " + line);
-
+    
                 String[] values = line.split(",");
-                if (values.length == 6) {
-                    System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s%n",
-                        values[0], values[1], values[2], values[3], values[4], values[5]);
+                if (values.length == 7) { // Expecting 7 columns now
+                    System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
+                            values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
                 } else {
                     // Debug: Print error for malformed row
                     System.out.println("Invalid row format: " + line);
