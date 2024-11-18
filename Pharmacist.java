@@ -89,7 +89,7 @@ public class Pharmacist extends User {
             System.out.println("7. Logout");
 
             int choice = sc.nextInt();
-            sc.close();
+
             switch (choice) {
                 case 1:
                     viewAppointmentOutcomeRecord();
