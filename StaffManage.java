@@ -143,10 +143,4 @@ public class StaffManage {
         return list.subList(1, list.size());
     }
 
-    
-
-
-    
-
-    
 }

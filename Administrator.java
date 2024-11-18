@@ -30,7 +30,6 @@ public class Administrator extends User {
         admin.displayMenu();
     }
 
-    
     protected void displayMenu() {
         if (!isValidStaff()) return;
 
@@ -65,10 +64,6 @@ public class Administrator extends User {
         }
     }
 
-
-
-
-   
     private void sorting(List<String[]> list)
     {
 
@@ -102,8 +97,6 @@ public class Administrator extends User {
 
         return sortedList; // Return sorted list
     }
-    
-
 
     private void managePatientMenu()
     {
@@ -233,8 +226,6 @@ public class Administrator extends User {
         }
 
     }
-   
-
 
     private static void display(List<String[]> displayList) {
         if (displayList == null || displayList.isEmpty()) {
@@ -280,8 +271,6 @@ public class Administrator extends User {
         }
         System.out.println("=".repeat(totalWidth));
     }
-    
-
 
     private boolean isValidStaff ()
     {   
@@ -349,7 +338,5 @@ public class Administrator extends User {
         return String.format(format, index, highestID);
     
     }
-
-
 
 }

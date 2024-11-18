@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalRecordAction {
-	  public static boolean isValidPath(String filePath) {
+    public static boolean isValidPath(String filePath) {
 	        File file = new File(filePath);
 	        return file.exists() && file.isFile() && file.canRead();
 	    }
@@ -44,5 +44,4 @@ public class MedicalRecordAction {
         }
         return RecordList;
     }
-	
 }

@@ -15,9 +15,7 @@ public class Doctor extends User {
     public Doctor(String hospitalID) {
         super(hospitalID);
     }
-    
-    
-    
+
     public void viewPatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
 
@@ -92,8 +90,6 @@ public class Doctor extends User {
             System.out.println("Invalid choice.");
         }
     }
-
-
 
     public void updatePatientMedicalRecords() {
         List<String> patientsUnderCare = new ArrayList<>();
@@ -242,9 +238,6 @@ public class Doctor extends User {
         }
     }
 
-
-    
-    
     public void viewPersonalSchedule() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
         List<Appointment> validAppointments = appointmentAction.getValidAppointments(staffName);
@@ -272,7 +265,6 @@ public class Doctor extends User {
             System.out.println(slot);
         }
     }
-
 
     public void setAvailability() {
         AppointmentAction appointmentAction = new AppointmentAction(appointmentsPath);
@@ -472,8 +464,6 @@ public class Doctor extends User {
         return latestUpdatedAppointment;
     }
 
-
-        
     public void recordToMedicalRecords(String[] updatedAppointment) {
         
         String[] patientInfo = null;
@@ -527,12 +517,6 @@ public class Doctor extends User {
         System.out.println("Medical record updated successfully.");
     }
 
-
-
-
-    
-   
-    
     protected void displayMenu() {
     	Hospital hospital = new Hospital();
         staffName = hospital.getName(hospitalID, this);

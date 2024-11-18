@@ -62,11 +62,9 @@ public class UserCredentials {
         this.mustChangePassword = mustChangePassword;
     }
 
-    public void setMustChangeUser(boolean mustChangePassword) {
+    public void setMustChangeUser(boolean mustChangeUser) {
         this.mustChangeUser = mustChangeUser;
     }
-
-
 
 
     public static User authenticate(String inputUsername, String inputPassword) {
