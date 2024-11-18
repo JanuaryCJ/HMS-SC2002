@@ -2,7 +2,7 @@ Name of Patient,Name of Doctor,Date of Appointment,Time of Appointment,Appointme
 Alice Brown,Emily Clarke,2/11/2024,1000,Canceled,NIL,NIL,NIL,NIL,NIL,NIL
 Alice Brown,Emily Clarke,3/11/2024,1000,Canceled,NIL,NIL,NIL,NIL,NIL,NIL
 Alice Brown,John Smith,7/11/2024,1200,Completed,Fever,Allergy Test,Loratadine,10,Pending,Patient experienced mild allergic reaction. Antihistamines prescribed.
-Bob Stone,Emily Clarke,3/11/2024,1200,Completed,Headache,Physiotherapy,Ibuprofen,200,Prescribed,Patient reported lower back pain. Referred to specialist for further evaluation.
+Bob Stone,Emily Clarke,3/11/2024,1200,Completed,Headache,Physiotherapy,Ibuprofen,200,Pending,Patient reported lower back pain. Referred to specialist for further evaluation.
 Alice Brown,John Smith,2/11/2024,1000,Confirmed,NIL,NIL,NIL,NIL,NIL,NIL
 Alice Brown,John Smith,3/11/2024,1000,Booked,NIL,NIL,NIL,NIL,NIL,NIL
 Bob Stone,John Smith,4/11/2024,1200,Confirmed,NIL,NIL,NIL,NIL,NIL,NIL

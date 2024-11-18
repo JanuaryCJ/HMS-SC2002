@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -198,20 +199,34 @@ public class Inventory {
             String line;
             boolean isFirstLine = true;
 
+            // Debug: Confirm file read started
+            System.out.println("Reading file: " + MEDICINE_CSV);
+
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false; // Skip the header row
+                    System.out.println("Skipped header row");
                     continue;
                 }
+
+                // Debug: Print the raw line being processed
+                System.out.println("Processing line: " + line);
 
                 String[] values = line.split(",");
                 if (values.length == 6) {
                     System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s%n",
-                            values[0], values[1], values[2], values[3], values[4], values[5]);
+                        values[0], values[1], values[2], values[3], values[4], values[5]);
+                } else {
+                    // Debug: Print error for malformed row
+                    System.out.println("Invalid row format: " + line);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + MEDICINE_CSV);
+            e.printStackTrace();
         } catch (IOException e) {
             System.out.println("Error reading the file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
