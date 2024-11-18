@@ -209,9 +209,6 @@ public class Inventory {
                     continue;
                 }
     
-                // Debug: Print the raw line being processed
-                System.out.println("Processing line: " + line);
-    
                 String[] values = line.split(",");
                 if (values.length == 7) { // Expecting 7 columns now
                     System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
