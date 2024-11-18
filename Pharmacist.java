@@ -75,7 +75,6 @@ public class Pharmacist extends User {
     	Hospital hospital = new Hospital();
         staffName = hospital.getName(hospitalID, this);
         System.out.println("Welcome Pharmacist, " + staffName);
-        
 
         Scanner sc = new Scanner(System.in);
 
