@@ -223,7 +223,7 @@ public class PrescriptionManagement {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 if (isFirstLine) {
-                    updatedFileContent.append(line).append("\n"); // Add header to updated content
+                    updatedFileContent.append(line).append("\n");
                     isFirstLine = false;
                     continue;
                 }
@@ -277,15 +277,15 @@ public class PrescriptionManagement {
                 String[] values = row.split(",");
                 if (values.length == 7 && values[0].equalsIgnoreCase(inputMedicine)) {
                     if (approvalStatus.equalsIgnoreCase("Approve")) {
-                        values[6] = "Approved on " + LocalDateTime.now(); // Update approval timestamp
-                        values[1] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Update Initial Stock
-                        values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Sync Current Stock
-                        values[4] = "0"; // Reset Request Replenishment
-                        values[5] = "NIL"; // Reset Replenishment Status
+                        values[6] = "Approved on " + LocalDateTime.now();
+                        values[1] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4]));
+                        values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4]));
+                        values[4] = "0";
+                        values[5] = "NIL";
                     } else if (approvalStatus.equalsIgnoreCase("Reject")) {
-                        values[6] = "Rejected on " + LocalDateTime.now(); // Update rejection timestamp
-                        values[4] = "0"; // Reset Request Replenishment
-                        values[5] = "NIL"; // Reset Replenishment Status
+                        values[6] = "Rejected on " + LocalDateTime.now();
+                        values[4] = "0";
+                        values[5] = "NIL";
                     }
                 }
                 finalFileContent.append(String.join(",", values)).append("\n");
