@@ -1,5 +1,0 @@
-Staff ID,Username,Password,Role,ChangePass
-D001,JohnS_D1,secret,Doctor,TRUE
-D002,EmilyC_D2,secret,Doctor,TRUE
-P001,MarkL_P1,secret,Pharmacist,TRUE
-A001,SarahL_A1,secret,Administrator,TRUE

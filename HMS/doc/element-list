@@ -1,0 +1,15 @@
+module:HMS
+administrator
+appointment_data
+doctor
+hospital
+main
+medical_equipment
+medical_record_data
+medicine_data
+patient
+patient_data
+pharmacist
+staff_data
+user
+utility
