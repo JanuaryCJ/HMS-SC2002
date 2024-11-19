@@ -12,9 +12,9 @@ import hospital.*;
 public class Doctor extends User {
 
 	protected String staffName;
-	private String appointmentsPath = "C:/Users/mingh/git/repository/HMS/Appointment_Record/AppointmentRecord.csv";
-	private String medicalRecordsPath = "C:/Users/mingh/git/repository/HMS/Medical_Records/MedicalRecords.csv";
-	private String patientListPath = "C:/Users/mingh/git/repository/HMS/Patient_List/Patient_List.csv";
+	private String appointmentsPath = "./Appointment_Record/AppointmentRecord.csv";
+	private String medicalRecordsPath = "./Medical_Records/MedicalRecords.csv";
+	private String patientListPath = "./Patient_List/Patient_List.csv";
 
     public Doctor(String hospitalID) {
         super(hospitalID);
