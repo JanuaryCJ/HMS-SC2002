@@ -17,23 +17,18 @@ import hospital.*;
 public class Patient extends User {
     
 
-    protected String staffName="Alice Brown";
-    private String Path="C:/Users/mingh/git/repository/HMS/Appointment_Record/AppointmentRecord.csv";
-    private String MedicalRecordPath="C:/Users/mingh/git/repository/HMS/Medical_Records/MedicalRecords.csv";
-    private String PatientInfoPath="C:/Users/mingh/git/repository/HMS/Patient_List/Patient_List.csv";
-    //private List<Appointment> app=new ArrayList<Appointment>();
+    protected String staffName;
+    private String Path="./Appointment_Record/AppointmentRecord.csv";
+    private String MedicalRecordPath="./Medical_Records/MedicalRecords.csv";
+    private String PatientInfoPath="./Patient_List/Patient_List.csv";
     public Patient(String hospitalID)
     {
         super(hospitalID);        
     }
 
-   /* private String displayStaffName(Administrator admin)
-    {
-        return admin.getStaffName(hospitalID, this);
-    }*/
+
     public List<Appointment> PresentAppointment(String staffName) {
     	AppointmentAction appointmentaction=new AppointmentAction();
-    	//List<Appointment> app=new ArrayList<Appointment>();
     	List<Appointment> app=appointmentaction.getPatientbyName(staffName);
     	app.removeIf(appointment -> appointment.getStatus().equals("Canceled"));
     	LocalDate today = LocalDate.now();
@@ -46,36 +41,11 @@ public class Patient extends User {
     	        return csvDate.isBefore(today);
     	    } catch (DateTimeParseException e) {
     	        e.printStackTrace();
-    	        return false; // If parsing fails, do not remove the item
+    	        return false; 
     	    }
     	});
 
-    	/*String line;
-        String csvSeparator = ",";  // Define the separator used in the CSV file (usually a comma)
-
-        try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
-           
-            //line = br.readLine();
-            /*if (line != null) {
-                System.out.println("Headers: " + line);  // Print headers if present
-            }*/
-
-            // Read and display the CSV data line by line
-            /*while ((line = br.readLine()) != null) {
-                // Split the line by the separator to get individual values
-                String[] values = line.split(csvSeparator);
-
-                // Check if the first column matches the target value
-                if (values.length > 0 && values[0].equals(this.staffName)) {
-                	Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4]);
-                	app.add(appointment);
-                	
-                }
-            }
-
-        } catch (IOException e) {
-            System.err.println("Error reading the CSV file: " + e.getMessage());
-        }*/
+    	
         int i2=0;
         for (int i = 0; i < app.size(); i++) {
         	i2++;
@@ -85,7 +55,6 @@ public class Patient extends User {
             System.out.print(" Date: "+app.get(i).getDate());
             System.out.print(" Time: "+app.get(i).getTime());
             System.out.println(" Status: "+app.get(i).getStatus());
-            //System.out.println(" Outcome: "+app.get(i).getOutcome());
         }
         if(app.size()==0) {
         	System.out.print("No upcoming appointments");
@@ -96,18 +65,15 @@ public class Patient extends User {
     public static int getDocNum() {
     	int i=0;
     	String line;
-        String csvSeparator = ",";  // Define the separator used in the CSV file (usually a comma)
+        String csvSeparator = ","; 
 
         try (BufferedReader br = new BufferedReader(new FileReader("./Staff_List/Staff_List.csv"))) {
             
-            //line = br.readLine();
-            
-            // Read and display the CSV data line by line
             while ((line = br.readLine()) != null) {
-                // Split the line by the separator to get individual values
+          
                 String[] values = line.split(csvSeparator);
 
-                // Check if the first column matches the target value
+
                 if (values.length > 0 && values[2].equals("Doctor")) {
                 	i++;
                 	
@@ -122,17 +88,15 @@ public class Patient extends User {
     public static ArrayList<String> getDocList(){
     	ArrayList<String> NameList = new ArrayList<>();
     	String line;
-        String csvSeparator = ",";  // Define the separator used in the CSV file (usually a comma)
+        String csvSeparator = ","; 
 
         try (BufferedReader br = new BufferedReader(new FileReader("./Staff_List/Staff_List.csv"))) {
-            //line = br.readLine();
-            
-            // Read and display the CSV data line by line
+
             while ((line = br.readLine()) != null) {
-                // Split the line by the separator to get individual values
+
                 String[] values = line.split(csvSeparator);
 
-                // Check if the first column matches the target value
+            
                 if (values.length > 0 && values[2].equals("Doctor")) {
                 	NameList.add(values[1]);
                 	
@@ -158,8 +122,7 @@ public class Patient extends User {
         String apptime;
     	LocalDate today = LocalDate.now();
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-        // Print the next 7 days
-    	//System.out.println(numofDoc);
+
         for (int i = 0; i <= 7; i++) {
             LocalDate nextDay = today.plusDays(i);
             System.out.println(i+ ": " + nextDay);
@@ -177,28 +140,25 @@ public class Patient extends User {
             continue;
         }
         try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
-            // Optional: Read and skip the header line if there is one
             line = br.readLine();
 
-            // Process each line in the CSV
+     
             while ((line = br.readLine()) != null) {
-                // Trim whitespace and print the line for debugging
+   
                 line = line.trim();
 
-                // Split line by the separator
                 String[] values = line.split(csvSeparator);
 
                 if (values.length >= 3) {
-                    String dateStr = values[2].trim();  // Assuming date is in the third column
-                    //System.out.println("Date found in CSV: " + dateStr);
+                    String dateStr = values[2].trim();  
 
                     try {
-                        // Parse the date from the third column
+                       
                         LocalDate csvDate = LocalDate.parse(dateStr, formatter);
 
-                        // Compare dates and display a message if they match
+                        
                         if (csvDate.isEqual(selectedDate)) {
-                            //System.out.println("Date match found in CSV: " + csvDate);
+                            
                             Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9],values[10]);
                         	app.add(appointment);
                         }
@@ -206,7 +166,7 @@ public class Patient extends User {
                         System.err.println("Error parsing date in row: " + line);
                     }
                 } else {
-                    //System.err.println("Skipping row due to insufficient columns: " + line);
+                   
                 }
             }
 
@@ -263,8 +223,7 @@ public class Patient extends User {
             String csvSeparator = ",";  
         	LocalDate today = LocalDate.now();
         	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-            // Print the next 7 days
-        	//System.out.println(numofDoc);
+
             for (int i = 0; i <= 7; i++) {
                 LocalDate nextDay = today.plusDays(i);
                 System.out.println(i+ ": " + nextDay);
@@ -281,43 +240,7 @@ public class Patient extends User {
                 System.out.println("Invalid date");
                 continue;
             }
-           /* try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
-                // Optional: Read and skip the header line if there is one
-                line = br.readLine();
-
-                // Process each line in the CSV
-                while ((line = br.readLine()) != null) {
-                    // Trim whitespace and print the line for debugging
-                    line = line.trim();
-
-                    // Split line by the separator
-                    String[] values = line.split(csvSeparator);
-
-                    if (values.length >= 3) {
-                        String dateStr = values[2].trim();  // Assuming date is in the third column
-                        //System.out.println("Date found in CSV: " + dateStr);
-
-                        try {
-                            // Parse the date from the third column
-                            LocalDate csvDate = LocalDate.parse(dateStr, formatter);
-
-                            // Compare dates and display a message if they match
-                            if (csvDate.isEqual(selectedDate)) {
-                                //System.out.println("Date match found in CSV: " + csvDate);
-                                Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4]);
-                            	app.add(appointment);
-                            }
-                        } catch (DateTimeParseException e) {
-                            System.err.println("Error parsing date in row: " + line);
-                        }
-                    } else {
-                        //System.err.println("Skipping row due to insufficient columns: " + line);
-                    }
-                }
-
-            } catch (IOException e) {
-                System.err.println("Error reading the CSV file: " + e.getMessage());
-            }*/
+          
             app1=appointmentAction.ReadPatientAppointment();
             
             for(int i=0;i<app1.size();i++) {
@@ -326,7 +249,7 @@ public class Patient extends User {
                     LocalDate csvDate = LocalDate.parse(dateStr, formatter);
 
                     if (csvDate.isEqual(selectedDate)) {
-                        //System.out.println("Date match found in CSV: " + csvDate);
+           
         
                     	app.add(app1.get(i));
                     }
@@ -404,15 +327,7 @@ public class Patient extends User {
     		
     		String[] data = {Name,bookdoc ,formatter.format(selectedDate).toString(), apptime,"Booked","NIL","NIL","NIL","NIL","NIL","NIL"};
 
-            /*try (FileWriter writer = new FileWriter(Path,true)) { // 'true' enables append mode
-                // Convert data array to CSV row format
-                String row = String.join(",", data);
-                writer.append(row).append("\n");
-                System.out.println("Appointment booked");
-                return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+
             appointmentAction.addAppointment(data);
             
         	return;}
@@ -437,33 +352,7 @@ public void CancelAppointment(String Name) {
 		{System.out.println("It's already canceled!");
 		continue;
 		}
-	/*String line;
-    String csvSeparator = ",";  
-    List<String> lines = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
-           
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(csvSeparator);             
-                if (values.length > 0 && values[0].equals(myapp.get(choice).getPatient())&& values[1].equals(myapp.get(choice).getDoctor())&& values[2].equals(myapp.get(choice).getDate())&& values[3].equals(myapp.get(choice).getTime())&& values[4].equals(myapp.get(choice).getStatus()))   {
-                	values[4]="Canceled";
-                	
-                	
-                }
-                lines.add(String.join(",", values));
-            }
-
-        } catch (IOException e) {
-            System.err.println("Error reading the CSV file: " + e.getMessage());
-        }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Path))) {
-            for (String updatedLine  : lines) {
-                writer.write(updatedLine );
-                writer.newLine();
-            }
-        }catch (IOException e) {
-            System.err.println("Error writing the CSV file: " + e.getMessage());
-        }*/
+	
 	AppointmentAction appointmentaction=new AppointmentAction();
 	boolean result=appointmentaction.cancelAppointment(myapp.get(choice));
 	if(result)
@@ -526,23 +415,22 @@ public void RescheduleAppointment(String Name) {
   
         line = br.readLine();
 
-        // Process each line in the CSV
         while ((line = br.readLine()) != null) {
         
             line = line.trim();
 
-            // Split line by the separator
+
             String[] values = line.split(csvSeparator);
 
             if (values.length >= 3) {
-                String dateStr = values[2].trim();  // Assuming date is in the third column
+                String dateStr = values[2].trim();  
            
 
                 try {
                    
                     LocalDate csvDate = LocalDate.parse(dateStr, formatter);
 
-                    // Compare dates and display a message if they match
+                  
                     if (csvDate.isEqual(selectedDate)) {
                         
                         Appointment appointment=new Appointment(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],values[8],values[9],values[10]);
@@ -552,7 +440,7 @@ public void RescheduleAppointment(String Name) {
                     System.err.println("Error parsing date in row: " + line);
                 }
             } else {
-                //System.err.println("Skipping row due to insufficient columns: " + line);
+               
             }
         }
 
@@ -607,7 +495,6 @@ public void RescheduleAppointment(String Name) {
     		if(app.get(i2).getTime().equals(apptime)&&app.get(i2).getDoctor().equals(bookdoc)&&(app.get(i2).getStatus().equals("Confirmed")||app.get(i2).getStatus().equals("Booked"))) {
     			
     				System.out.println("This doctor has been booked , choose another one ");
-    				//continue outerLoop;
     			
     			
     		}
@@ -878,7 +765,7 @@ public void ChangeContact() {
         	break;}
         case 9:
         	{isLoggedIn = false;
-        	break;}
+        	return;}
         default:
         	break;
         }
