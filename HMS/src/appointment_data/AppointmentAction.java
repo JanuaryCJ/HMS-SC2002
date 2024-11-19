@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+
 import utility.*;
 
 
 public class AppointmentAction implements AppointmentInterface {
 
-    private static final String appointmentPath = "C:/Users/mingh/git/repository/HMS/Appointment_Record/AppointmentRecord.csv";
+    private static final String appointmentPath = "./Appointment_Record/AppointmentRecord.csv";
     private List<Appointment> appointments = new ArrayList<>();
 
     public AppointmentAction(){}
