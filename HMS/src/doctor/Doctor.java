@@ -248,36 +248,8 @@ public class Doctor extends User {
             System.out.println("Invalid patient selection.");
         }
     }
-}
 
-
-    public void viewPersonalSchedule() {
-        AppointmentAction appointmentAction = new AppointmentAction();
-        List<Appointment> validAppointments = appointmentAction.getValidAppointments(staffName);
-
-        if (validAppointments.isEmpty()) {
-            System.out.println("No upcoming appointments.");
-        } else {
-            System.out.println("Your Upcoming Appointments (Status: Booked or Confirmed):");
-            for (Appointment app : validAppointments) {
-                System.out.println("Patient: " + app.getPatient() +
-                                   ", Date: " + app.getDate() +
-                                   ", Time: " + app.getTime() +
-                                   ", Status: " + app.getStatus());
-            }
-        }
-        
-        
     
-        
-        List<String> availableSlots = appointmentAction.getAvailableSlots(staffName);
-
-        
-        System.out.println("\nAvailable Slots:");
-        for (String slot : availableSlots) {
-            System.out.println(slot);
-        }
-    }
 
     /**
      * Displays the doctor's personal schedule including upcoming appointments and available slots.
@@ -432,6 +404,7 @@ public class Doctor extends User {
     /**
      * Displays all upcoming confirmed appointments for the doctor.
      */
+    
     public void viewUpcomingAppointment() {
         AppointmentAction appointmentAction = new AppointmentAction();
 
