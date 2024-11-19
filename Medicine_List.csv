@@ -1,0 +1,7 @@
+Medicine Name,Initial Stock,Current Stock,Low Stock Level Alert,Request Replenishment,Replenishment Approved,Last Updated
+Paracetamol,19000,5880,150,0,NIL,NIL
+Ibuprofen,12050,10500,150,250,Pending,NIL
+Amoxicillin,9575,5530,150,450,Pending,NIL
+Loratadine,19300,12190,150,0,NIL,NIL
+Jujube,13000,13000,150,0,-,Added on 2024-11-18 19:27:19
+KFC,12000,12000,130,0,NIL,NIL
