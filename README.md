@@ -2,8 +2,8 @@
 Java OOP Project for Hospital Management System 
 
 Contributors: 
-Sun Yifei
-Wu Chengrui
-Tang Ruixuan
-Jan Chen Jie
-Alvin Ong Minghui
+Sun Yifei,
+Wu Chengrui,
+Tang Ruixuan,
+Jan Chen Jie,
+Alvin Ong Minghui.
