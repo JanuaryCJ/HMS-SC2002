@@ -1,3 +1,4 @@
+
 /* it manages MedicalEquipment
 @author: Alvin Ong
 @version: 1.0
