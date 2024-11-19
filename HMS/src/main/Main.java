@@ -23,8 +23,9 @@ public class Main {
                 User user = UserCredentials.authenticate(username, password);
                 if (user != null) {
                     user.displayMenu();
-                    break;
                 }
+                
+                
             
         }
 
