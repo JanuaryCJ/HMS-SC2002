@@ -1,7 +1,7 @@
 ![HMS](https://github.com/user-attachments/assets/e1ac17b9-137f-4074-84b2-2097622ebaac)
-Java OOP Project for Hospital Management System 
+#**Java OOP Project for Hospital Management System** 
 
-Contributors: 
+**Contributors:** 
 Sun Yifei,
 Wu Chengrui,
 Tang Ruixuan,
@@ -10,7 +10,7 @@ Alvin Ong Minghui.
 
 The project organizes classes into packages based on their functionality and roles, such as user, administrator, appointment_data, medical_record_data, and inventory_data, ensuring proper encapsulation.
 
-Class Design:
+**Class Design:**
 
 - The main class runs the system and relies on UserCredential for login functionality, forming a dependency relationship.
 - The User abstract class interacts with UserCredential and has subclasses: Patient, Doctor, Pharmacist, and Administrator.
@@ -18,13 +18,13 @@ Class Design:
 - The Pharmacist class manages inventory, with Medicine and Medical Equipment aggregated as part of the inventory. PrescriptionManagement helps pharmacists manage medications.
 - The Administrator class manages StaffManage, UserManage, and PatientManage via composition, using the AdministratorManageFunction interface for polymorphism. It interacts with the Hospital class to manage user data in CSV files.
 
-Additional Features:
+**Additional Features:**
 
 - A login system identifies users' roles (e.g., patient, doctor) to display role-specific menus and actions. Users can update their credentials for security.
 - The Inventory class manages medicine and equipment stocks individually. The design allows for extensibility, such as adding a HospitalDirector class.
 - Organized classes within packages improve code readability and maintainability.
 
-Design Considerations:
+**Design Considerations:**
 
 - Applied the SOLID principles: Single Responsibility Principle for Separation of Appointment and AppointmentAction classes.
 - Applied the SOLID principles: Interface Segregation and Dependency Inversion Principles for Usage of AdministratorManageFunction interface.
