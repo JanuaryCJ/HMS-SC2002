@@ -15,9 +15,9 @@ public class Hospital {
 
     protected String hospitalID;
 
-    private static final String STAFF_FILE_PATH = "C:/Users/mingh/git/repository/HMS/Staff_List/Staff_List.csv";
-    private static final String PATIENT_FILE_PATH = "C:/Users/mingh/git/repository/HMS/Patient_List/Patient_List.csv";
-    private static final String MEDICINE_FILE_PATH = "C:/Users/mingh/git/repository/HMS/Medicine_List/Medicine_List.csv";
+    private static final String STAFF_FILE_PATH = "./Staff_List/Staff_List.csv";
+    private static final String PATIENT_FILE_PATH = "./Patient_List/Patient_List.csv";
+    private static final String MEDICINE_FILE_PATH = "./Medicine_List/Medicine_List.csv";
 
     private List<String[]> staffList;
     private List<String[]> patientList;
