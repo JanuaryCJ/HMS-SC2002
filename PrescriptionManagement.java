@@ -51,7 +51,7 @@ public class PrescriptionManagement {
         String medicineName = scanner.nextLine().trim();
     
         File inputFile = new File(MEDICINE_CSV);
-        File tempFile = new File("Temp_" + MEDICINE_CSV);
+        File tempFile = new File(inputFile.getParent(), "Temp_" + inputFile.getName());
     
         boolean medicineFound = false;
     
@@ -63,7 +63,6 @@ public class PrescriptionManagement {
     
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
-                    // Write header to temp file
                     bw.write(line);
                     bw.newLine();
                     isFirstLine = false;
@@ -73,8 +72,7 @@ public class PrescriptionManagement {
                 String[] values = line.split(",");
                 if (values.length >= 1 && values[0].equalsIgnoreCase(medicineName)) {
                     medicineFound = true;
-                    System.out.println("Medicine '" + medicineName + "' found and will be deleted.");
-                    // Skip writing this line to effectively delete it
+                    System.out.println("Medicine '" + medicineName + "' found and deleted.");
                 } else {
                     bw.write(line);
                     bw.newLine();
@@ -86,7 +84,6 @@ public class PrescriptionManagement {
             return;
         }
     
-        // Handle renaming and deletion
         if (medicineFound) {
             if (inputFile.delete()) {
                 if (tempFile.renameTo(inputFile)) {
@@ -99,7 +96,7 @@ public class PrescriptionManagement {
             }
         } else {
             System.out.println("Medicine '" + medicineName + "' not found in the list.");
-            tempFile.delete(); // Clean up temp file if no medicine was found
+            tempFile.delete();
         }
     }
 
