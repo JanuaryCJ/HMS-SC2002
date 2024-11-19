@@ -484,5 +484,4 @@ public class AppointmentAction implements AppointmentInterface {
             System.out.println("Error reading the file: " + e.getMessage());
         }
     }
-
 }
