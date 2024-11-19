@@ -16,8 +16,8 @@ public class UserCredentials {
     private boolean mustChangePassword;
     private boolean mustChangeUser;
 
-    private static final String FILE_PATH1 = "C:/Users/mingh/git/repository/HMS/User_List/User_List.csv";
-    private static final String SECRET_PATH = "C:/Users/mingh/git/repository/HMS/User_Secret_List/User_Secret_List.csv";
+    private static final String FILE_PATH1 = "./User_List/User_List.csv";
+    private static final String SECRET_PATH = "./User_Secret_List/User_Secret_List.csv";
 
 
     public UserCredentials(String hospitalID) {
@@ -181,7 +181,7 @@ public class UserCredentials {
 
     public static void writeUser(List<String[]>data, User user)
     {
-        if (user instanceof Administrator) writeCSV(data);
+    	writeCSV(data);
     }
 
 

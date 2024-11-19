@@ -123,7 +123,6 @@ public abstract class User {
     protected static boolean validPass(String newPassword, UserCredentials currentUser) {
         if (newPassword.length() >= 8) {
             currentUser.setPassword(newPassword);
-            currentUser.setMustChangePass(false);
             return true;
         } else {
             System.out.println("Password must be at least 8 characters long.");

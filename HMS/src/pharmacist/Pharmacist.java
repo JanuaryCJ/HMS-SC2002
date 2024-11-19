@@ -1,9 +1,10 @@
 package pharmacist;
 
+
 import java.util.Scanner;
 
 import user.*;
-import medicine_data.*;
+import inventory_data.*;
 import appointment_data.*;
 import hospital.*;
 
