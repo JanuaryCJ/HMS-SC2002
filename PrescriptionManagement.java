@@ -205,49 +205,48 @@ public class PrescriptionManagement {
 
     public void approveReplenishmentRequest() {
         Scanner scanner = new Scanner(System.in);
-
+    
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV))) {
             StringBuilder updatedFileContent = new StringBuilder();
             String line;
             boolean isFirstLine = true;
-
+    
             System.out.println("Medicines with 'Pending' Replenishment Requests:\n");
             System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
                     "Medicine Name", "Initial Stock", "Current Stock",
                     "Low Stock Level Alert", "Request Replenishment",
                     "Replenishment Approved", "Last Update");
-
+    
             boolean hasPendingRequests = false;
-
+    
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 if (isFirstLine) {
-                    updatedFileContent.append(line).append("\n");
+                    updatedFileContent.append(line).append("\n"); // Add header to updated content
                     isFirstLine = false;
                     continue;
                 }
-
+    
                 if (values.length == 7 && values[5].equalsIgnoreCase("Pending")) {
                     hasPendingRequests = true;
-
                     System.out.printf("%-15s %-15s %-15s %-20s %-20s %-20s %-20s%n",
                             values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
                 }
                 updatedFileContent.append(line).append("\n");
             }
-
+    
             if (!hasPendingRequests) {
                 System.out.println("\nNo pending replenishment requests found.");
                 return;
             }
-
+    
             String inputMedicine;
             do {
                 System.out.print("\nEnter the Medicine Name to process: ");
                 inputMedicine = scanner.nextLine().trim();
-
-                if (!isMedicineValid(inputMedicine)) {
-                    System.out.println("Invalid Medicine Name.");
+    
+                if (!isPendingValid(inputMedicine, updatedFileContent.toString())) {
+                    System.out.println("Invalid Medicine Name or not in Pending status.");
                     System.out.print("Do you want to retry or quit? (Type 'Retry' to try again or 'Quit' to exit): ");
                     String choice = scanner.nextLine().trim();
                     if (choice.equalsIgnoreCase("Quit")) {
@@ -258,7 +257,7 @@ public class PrescriptionManagement {
                     break;
                 }
             } while (true);
-
+    
             boolean validInput = false;
             String approvalStatus = "";
             while (!validInput) {
@@ -270,31 +269,31 @@ public class PrescriptionManagement {
                     System.out.println("Invalid input. Please type 'Approve' or 'Reject'.");
                 }
             }
-
+    
             StringBuilder finalFileContent = new StringBuilder();
             String[] rows = updatedFileContent.toString().split("\n");
             for (String row : rows) {
                 String[] values = row.split(",");
                 if (values.length == 7 && values[0].equalsIgnoreCase(inputMedicine)) {
                     if (approvalStatus.equalsIgnoreCase("Approve")) {
-                        values[6] = "Approved on " + LocalDateTime.now();
+                        values[6] = "Approved on " + LocalDateTime.now(); // Update approval timestamp
                         values[1] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Update Initial Stock
                         values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(values[4])); // Sync Current Stock
-                        values[4] = "0";
-                        values[5] = "NIL";
+                        values[4] = "0"; // Reset Request Replenishment
+                        values[5] = "NIL"; // Reset Replenishment Status
                     } else if (approvalStatus.equalsIgnoreCase("Reject")) {
-                        values[6] = "Rejected on " + LocalDateTime.now();
-                        values[4] = "0";
-                        values[5] = "NIL";
+                        values[6] = "Rejected on " + LocalDateTime.now(); // Update rejection timestamp
+                        values[4] = "0"; // Reset Request Replenishment
+                        values[5] = "NIL"; // Reset Replenishment Status
                     }
                 }
                 finalFileContent.append(String.join(",", values)).append("\n");
             }
-
+    
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV))) {
                 bw.write(finalFileContent.toString());
             }
-
+    
             System.out.println("Replenishment request for '" + inputMedicine + "' has been " + approvalStatus + ".");
         } catch (IOException e) {
             System.out.println("Error accessing the file: " + e.getMessage());
@@ -436,6 +435,17 @@ public class PrescriptionManagement {
             }
         } catch (IOException e) {
             System.out.println("Error validating medicine: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean isPendingValid(String medicineName, String fileContent) {
+        String[] rows = fileContent.split("\n");
+        for (String row : rows) {
+            String[] values = row.split(",");
+            if (values.length == 7 && values[0].equalsIgnoreCase(medicineName) && values[5].equalsIgnoreCase("Pending")) {
+                return true;
+            }
         }
         return false;
     }
