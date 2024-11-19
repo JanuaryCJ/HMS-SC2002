@@ -46,33 +46,35 @@ public class PrescriptionManagement {
 
     public void deleteMedicine() {
         Scanner scanner = new Scanner(System.in);
-
+    
         System.out.print("Enter Medicine Name to delete: ");
         String medicineName = scanner.nextLine().trim();
-
+    
         File inputFile = new File(MEDICINE_CSV);
         File tempFile = new File("Temp_" + MEDICINE_CSV);
-
+    
         boolean medicineFound = false;
-
+    
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
              BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
-
+    
             String line;
             boolean isFirstLine = true;
-
+    
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
+                    // Write header to temp file
                     bw.write(line);
                     bw.newLine();
                     isFirstLine = false;
                     continue;
                 }
-
+    
                 String[] values = line.split(",");
                 if (values.length >= 1 && values[0].equalsIgnoreCase(medicineName)) {
                     medicineFound = true;
-                    System.out.println("Medicine '" + medicineName + "' found and deleted.");
+                    System.out.println("Medicine '" + medicineName + "' found and will be deleted.");
+                    // Skip writing this line to effectively delete it
                 } else {
                     bw.write(line);
                     bw.newLine();
@@ -81,8 +83,10 @@ public class PrescriptionManagement {
         } catch (IOException e) {
             System.out.println("Error processing the file: " + e.getMessage());
             e.printStackTrace();
+            return;
         }
-
+    
+        // Handle renaming and deletion
         if (medicineFound) {
             if (inputFile.delete()) {
                 if (tempFile.renameTo(inputFile)) {
@@ -95,7 +99,7 @@ public class PrescriptionManagement {
             }
         } else {
             System.out.println("Medicine '" + medicineName + "' not found in the list.");
-            tempFile.delete();
+            tempFile.delete(); // Clean up temp file if no medicine was found
         }
     }
 
